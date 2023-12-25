@@ -34,14 +34,29 @@
     <script>
 
         function loadData() {
+            // fetch('http://time.jsontest.com')
+            // .then(result => result.json())
+            // .then(json => console.log(json));
 
             // Assignment 2
 
             // use fetch to retrieve the articles from http://localhost/api/article
             // Note: Assignment 1 has to be completed before this works!
-
+            fetch('http://localhost/api/article')
+            .then(result => result.json())
+            .then(articles => {
+                articles.forEach(article => {
             // Create an H2 with the title and a p with the content for every article
             // And display the articles on the page by appending them to the 'articles' div
+                    const newH2 = document.createElement('h2');
+                    newH2.innerText = article.title;
+                    const newP = document.createElement('p');
+                    newP.innerText = article.content;
+                    const articlesList = document.getElementById('articles');
+                    articlesList.appendChild(newH2);
+                    articlesList.appendChild(newP);
+                });
+            });
 
         }
 
@@ -50,13 +65,27 @@
             // Assignment 3
 
             // Create an object with the data from the form (title and content)
+            const data = { 
+                title : document.getElementById('title').value,
+                content : document.getElementById('content').value
+            };
 
             // Post the data to http://localhost/api/article using fetch
+            fetch('http://localhost/api/article', 
+            {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', },
+            body: JSON.stringify(data),
+            })
 
             // (Optional) Reload the articles on the page afterward
-        }
+            .then(result => {
+            console.log(result);
+            loadData();
+            })
+            .catch(err => alert(err));
 
-        loadData();
+        }
     </script>
 </body>
 

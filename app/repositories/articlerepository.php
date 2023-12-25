@@ -26,7 +26,8 @@ class ArticleRepository extends Repository
             $stmt->execute([$article->getTitle(), $article->getContent(), $article->getAuthor()]);
 
         } catch (PDOException $e) {
-            echo $e;
+            http_response_code(500);
+            echo $e->getMessage();
         }
     }
 }

@@ -1,12 +1,17 @@
 <?php
 
-class Article {
+class Article implements \JsonSerializable {
 
     private int $id;
     private string $title;
     private string $content;
     private string $author;
     private string $posted_at;
+
+    public function jsonSerialize() : mixed
+    {
+        return get_object_vars($this);
+    }
     
     /**
      * Get the value of id

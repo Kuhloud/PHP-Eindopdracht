@@ -20,7 +20,8 @@ class ArticleController
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
             // your code here
-            // return all articles in the database as JSON
+            $articles = $this->articleService->getAll();
+            echo json_encode($articles);
 
         }
 
@@ -30,6 +31,15 @@ class ArticleController
             // your code here
             // read JSON from the request, convert it to an article object
             // and have the service insert the article into the database
+            $json = file_get_contents('php://input');
+            $object = json_decode($json);
+
+            $article = new Article();
+            $article->setTitle($object->title);
+            $article->setContent($object->content);
+            $article->setAuthor("Keep Yourself Safe");
+
+            $this->articleService->insert($article);
 
         }
     }
