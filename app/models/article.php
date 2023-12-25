@@ -1,6 +1,6 @@
 <?php
 
-class Article implements \JsonSerializable {
+class Article implements JsonSerializable {
 
     private int $id;
     private string $title;
@@ -8,8 +8,7 @@ class Article implements \JsonSerializable {
     private string $author;
     private string $posted_at;
 
-    public function jsonSerialize() : mixed
-    {
+    public function jsonSerialize() : mixed {
         return get_object_vars($this);
     }
     

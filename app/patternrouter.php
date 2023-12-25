@@ -54,12 +54,9 @@ class PatternRouter
             die();
         }
         // dynamically call relevant controller method
-        try {
+
             $controllerObj = new $controllerName;
             $controllerObj->{$methodName}();
-        } catch (Exception $e) {
-            http_response_code(404);
-            die();
-        }
+
     }
 }

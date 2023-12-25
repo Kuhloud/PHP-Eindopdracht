@@ -13,79 +13,93 @@
             vertical-align: top;
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
 
-    
-    <h1>Post a new Article</h1>
-    <form id="myForm">
-        <label for="title">Title:</label><input type="text" id="title" />
-        <br>
-        <label for="content">Content:</label><textarea id="content" cols="40"></textarea>
-        <br>
-        <button type="button" onclick="sendForm();">Send!</button>
-    </form>
+    <div class="container">
+        <h1 class="my-4">Post a new Article</h1>
+        <form id="myForm">
+            <label for="title">Title:</label><input type="text" id="title" />
+            <br>
+            <label for="content">Content:</label><textarea id="content" cols="40"></textarea>
+            <br>
+            <button type="button" onclick="sendForm();">Send!</button>
+        </form>
 
-    <h1>Articles</h1>
-    <div id="articles">
-        <p>Articles go here...</p>
+        <h1 class="my-4">Articles</h1>
+        <div id="articles">
+            <p>Articles go here...</p>
+        </div>
     </div>
     <script>
 
-        function loadData() {
-            // fetch('http://time.jsontest.com')
-            // .then(result => result.json())
-            // .then(json => console.log(json));
-
-            // Assignment 2
+        async function loadData() {
 
             // use fetch to retrieve the articles from http://localhost/api/article
-            // Note: Assignment 1 has to be completed before this works!
-            fetch('http://localhost/api/article')
-            .then(result => result.json())
-            .then(articles => {
-                articles.forEach(article => {
+
+            const response = await fetch("http://localhost/api/article");
+            const articles = await response.json();
+            console.log(articles);
+
             // Create an H2 with the title and a p with the content for every article
             // And display the articles on the page by appending them to the 'articles' div
-                    const newH2 = document.createElement('h2');
-                    newH2.innerText = article.title;
-                    const newP = document.createElement('p');
-                    newP.innerText = article.content;
-                    const articlesList = document.getElementById('articles');
-                    articlesList.appendChild(newH2);
-                    articlesList.appendChild(newP);
-                });
+            const div = document.getElementById('articles');
+            div.innerHTML = '';
+
+            articles.forEach(article => {
+                const h2 = document.createElement('h2');
+                h2.innerText = article.title;
+                const p = document.createElement('p');
+                p.innerText = article.content;
+                div.appendChild(h2);
+                div.appendChild(p);
             });
 
         }
 
-        function sendForm() {
-
-            // Assignment 3
+        async function sendForm() {
 
             // Create an object with the data from the form (title and content)
-            const data = { 
-                title : document.getElementById('title').value,
-                content : document.getElementById('content').value
+            let data = {
+                title: document.getElementById('title').value,
+                content: document.getElementById('content').value
             };
 
             // Post the data to http://localhost/api/article using fetch
-            fetch('http://localhost/api/article', 
-            {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', },
-            body: JSON.stringify(data),
-            })
+            const response = await fetch('http://localhost/api/article',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+            if (!response.ok) {
+                
+                // Note: We shouldn't actually send detailed backend errors to our clients 
+                // in a production environment. Log them in the backend instead.
+
+                const error = await response.text();
+                console.log(error);
+
+                const form = document.getElementById('myForm');
+                const errorDiv = document.createElement('div');
+                errorDiv.classList.add('alert', 'alert-danger');
+
+                errorDiv.innerHTML = error;
+                form.prepend(errorDiv);
+            }
 
             // (Optional) Reload the articles on the page afterward
-            .then(result => {
-            console.log(result);
             loadData();
-            })
-            .catch(err => alert(err));
-
         }
+
+        // Load the articles when the page is opened
+        loadData();
     </script>
 </body>
 
