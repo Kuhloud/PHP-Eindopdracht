@@ -1,3 +1,12 @@
 body {
     background-color: #E30380;
 }
+#logo {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
