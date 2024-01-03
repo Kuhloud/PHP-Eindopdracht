@@ -23,7 +23,7 @@ class ArrayRouter {
         $controller = $routes[$uri]['controller'];
         $method = $routes[$uri]['method'];
 
-        require __DIR__ . '/controllers/' . $controller . '.php';
+        require __DIR__ . '../controllers/' . $controller . '.php';
         $controllerObj = new $controller;
         $controllerObj->$method();
     }

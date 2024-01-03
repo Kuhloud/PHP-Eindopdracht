@@ -24,22 +24,74 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `article`
+-- Table structure for all tables
 --
 
-CREATE TABLE `article` (
-  `id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `content` varchar(10000) NOT NULL,
-  `author` varchar(255) NOT NULL,
-  `posted_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role_id INT DEFAULT 1,
+    joined_at DATETIME NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (role_id) REFERENCES user_roles(role_id)
+);
+
+CREATE TABLE boards (
+    board_id INT AUTO_INCREMENT PRIMARY KEY,
+    board_name VARCHAR(255) NOT NULL,
+    total_messages INT DEFAULT 0
+);
+CREATE TABLE threads (
+    thread_id INT AUTO_INCREMENT PRIMARY KEY,
+    board_id INT,
+    title VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (board_id) REFERENCES boards(board_id)
+);
+
+CREATE TABLE posts (
+    post_id INT AUTO_INCREMENT PRIMARY KEY,
+    thread_id INT,
+    user_id INT,
+    message TEXT,
+    posted_at DATETIME NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (thread_id) REFERENCES threads(thread_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) 
+);
+
+CREATE TABLE tags (
+    tag_id INT AUTO_INCREMENT PRIMARY KEY,
+    tag_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE thread_tags (
+    thread_id INT,
+    tag_id INT,
+    FOREIGN KEY (thread_id) REFERENCES threads(thread_id),
+    FOREIGN KEY (tag_id) REFERENCES tags(tag_id),
+    PRIMARY KEY (thread_id, tag_id)
+);
+CREATE TABLE user_roles (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(50) NOT NULL
+);
+
+INSERT INTO user_roles (role_name) VALUES ('Member');
+INSERT INTO user_roles (role_name) VALUES ('Moderator');
+INSERT INTO user_roles (role_name) VALUES ('Administrator');
+
+ALTER TABLE users
+ADD COLUMN role_id INT DEFAULT 1,
+ADD FOREIGN KEY (role_id) REFERENCES user_roles(role_id);
+
 
 --
--- Dumping data for table `article`
+-- Dumping data for table tags
 --
 
-INSERT INTO `article` (`id`, `title`, `content`, `author`, `posted_at`) VALUES
+INSERT INTO tags (`title`, `content`, `author`, `posted_at`) VALUES
 (1, 'test title', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris porta mauris nisl, vel iaculis quam venenatis quis. Quisque id efficitur dui, eget tempor erat. Fusce hendrerit, sem non porttitor semper, nunc metus pharetra sem, a ultrices lorem leo nec arcu. Vestibulum at interdum velit. Suspendisse vulputate rutrum libero, id placerat ipsum lacinia eu. Fusce vel orci eget augue maximus rhoncus eu non nisl. Cras id sodales risus. Mauris sed ullamcorper lacus, a tempus orci. Donec dignissim ipsum at varius commodo. Nulla a sapien aliquam, maximus neque non, vehicula libero. Nulla a varius purus, at tincidunt diam. Morbi sed urna a diam pretium tincidunt nec at neque. Aliquam consectetur at turpis at consequat. Sed dapibus, quam vel faucibus malesuada, dui lectus lacinia felis, porta posuere dui odio id enim. Vivamus molestie pharetra leo, vitae mattis sapien congue non. Etiam dapibus, diam at interdum tempus, ligula augue commodo nulla, vel fermentum elit est vel justo.', 'test author', '2021-11-30 13:09:55');
 
 INSERT INTO `article` (`id`, `title`, `content`, `author`, `posted_at`) VALUES
@@ -51,26 +103,6 @@ INSERT INTO `article` (`id`, `title`, `content`, `author`, `posted_at`) VALUES
 INSERT INTO `article` (`id`, `title`, `content`, `author`, `posted_at`) VALUES
 (4, 'test title', 'Curabitur ultricies est malesuada ante laoreet condimentum. Nam ullamcorper, mi at dignissim dignissim, turpis tortor tristique ligula, sed rhoncus ipsum sapien sit amet lacus. Curabitur ligula risus, vulputate vel urna ac, gravida maximus erat. Nunc odio urna, sagittis non mi eu, semper tristique magna. Cras vitae mi nec ex sollicitudin hendrerit et vitae urna. Praesent posuere sem in lectus dignissim viverra. Vivamus neque metus, rhoncus ac arcu vel, eleifend molestie neque. Fusce eget varius massa. Praesent eleifend nunc leo, et pretium sapien volutpat a. Nulla consectetur facilisis sapien, at rhoncus nibh cursus maximus. Donec at eleifend lacus, quis mollis eros. Fusce dui augue, rutrum sit amet ipsum porttitor, convallis congue sapien.', 'test author', '2021-11-30 13:09:55');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `article`
---
-ALTER TABLE `article`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `article`
---
-ALTER TABLE `article`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

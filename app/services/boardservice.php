@@ -1,18 +1,18 @@
 <?php
-require __DIR__ . '/../repositories/articlerepository.php';
+require __DIR__ . '/../repositories/boardrepository.php';
 
 
-class ArticleService {
+class BoardService {
     public function getAll() {
         // retrieve data
-        $repository = new ArticleRepository();
+        $repository = new BoardRepository();
         $articles = $repository->getAll();
         return $articles;
     }
 
     public function insert($article) {
         // retrieve data
-        $repository = new ArticleRepository();
+        $repository = new BoardRepository();
         $repository->insert($article);        
     }
 }
