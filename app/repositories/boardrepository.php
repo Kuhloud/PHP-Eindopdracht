@@ -7,21 +7,21 @@ class BoardRepository extends Repository
         function getAll()
         {
 
-                $stmt = $this->connection->prepare("SELECT * FROM article");
+                $stmt = $this->connection->prepare("SELECT * FROM boards");
                 $stmt->execute();
 
-                $stmt->setFetchMode(PDO::FETCH_CLASS, 'Article');
-                $articles = $stmt->fetchAll();
+                $stmt->setFetchMode(PDO::FETCH_CLASS, 'Board');
+                $boards = $stmt->fetchAll();
 
-                return $articles;
+                return $boards;
 
         }
 
-        function insert($article)
+        function insert($board)
         {
-                $stmt = $this->connection->prepare("INSERT into article (title, content, author, posted_at) VALUES (?,?,?, NOW())");
+                $stmt = $this->connection->prepare("INSERT into boards (board_name) VALUES (?)");
 
-                $stmt->execute([$article->getTitle(), $article->getContent(), $article->getAuthor()]);
+                $stmt->execute([$board->getBoardName()]);
 
         }
 }

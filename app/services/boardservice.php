@@ -6,14 +6,14 @@ class BoardService {
     public function getAll() {
         // retrieve data
         $repository = new BoardRepository();
-        $articles = $repository->getAll();
-        return $articles;
+        $boards = $repository->getAll();
+        return $boards;
     }
 
-    public function insert($article) {
+    public function insert($board) {
         // retrieve data
         $repository = new BoardRepository();
-        $repository->insert($article);        
+        $repository->insert($board);        
     }
 }
 

@@ -1,4 +1,8 @@
-<h1>Articles!</h1>
+<?php include ('./header.php'); ?>
+<body>
+    
+</body>
+</html>
 
 <?php
 foreach($model as $article) {
