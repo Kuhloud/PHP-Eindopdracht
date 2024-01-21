@@ -1,8 +1,4 @@
 <?php include ('./header.php'); ?>
-<?php
- error_reporting(E_ALL);
- ini_set('display_errors', 1);
-?>
 <title>Login - Inholland Forum</title>
 <section id="login">
     <form action="index.php" method="POST" class="form-signin"> 

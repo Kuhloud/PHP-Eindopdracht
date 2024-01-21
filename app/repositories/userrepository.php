@@ -4,48 +4,27 @@ require __DIR__ . '/../models/user.php';
 
 class UserRepository extends Repository
 {
-        function getAll()
+        function insert($username, $password, $email)
         {
+                $stmt = $this->connection->prepare("INSERT into users VALUES (username, email, password, joined_at) 
+                VALUES (:username, :email, :password, now())");
+                $stmt->bindParam(':username', $username);
+                $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':password', $password);
 
-                $stmt = $this->connection->prepare("SELECT * FROM boards");
                 $stmt->execute();
 
-                $stmt->setFetchMode(PDO::FETCH_CLASS, 'Board');
-                $boards = $stmt->fetchAll();
-
-                return $boards;
-
         }
-        function getBoardById($boardId)
-        {
-
-                $stmt = $this->connection->prepare("SELECT * FROM boards WHERE board_id = ?");
-                $stmt->execute([$boardId]);
-
-                $stmt->setFetchMode(PDO::FETCH_CLASS, 'Board');
-                $board = $stmt->fetch();
-
-                return $board;
-
+        function isUniqueUsername($username) {
+                $stmt = $this->connection->prepare("SELECT * FROM users WHERE username = ?");
+                $stmt->execute([$username]);
+                $result = $stmt->get_result();
+                return $result->num_rows === 0;
         }
-        function getBoardIdWithName(string $boardName)
-        {
-
-                $stmt = $this->connection->prepare("SELECT board_id FROM boards WHERE board_name = ?");
-                $stmt->execute([$boardName]);
-
-                $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
-                $boardId = $stmt->fetch();
-
-                return $boardId;
-
-        }
-
-        function insert($board)
-        {
-                $stmt = $this->connection->prepare("INSERT into boards (board_name) VALUES (?)");
-
-                $stmt->execute([$board->getBoardName()]);
-
+        function isUniqueEmail($email){
+                $stmt = $this->connection->prepare("SELECT * FROM users WHERE email = ?");
+                $stmt->execute([$email]);
+                $result = $stmt->get_result();
+                return $result->num_rows === 0;
         }
 }

@@ -63,6 +63,7 @@ class PatternRouter
             $_GET['board_id'] = $boardId; 
             $methodName = 'board'; 
         }
+        // for thread.php
         $controllerObj->{$methodName}();
     }
 }

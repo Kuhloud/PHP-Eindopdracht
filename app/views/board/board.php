@@ -5,7 +5,7 @@
         <header class="col-12">
             <h2><?= $board->getBoardName()?></h2>
             <p><?= $board->getBoardDescription()?></p>
-            <a class="btn btn-primary" href="/thread" role="button">Create Thread</a>
+            <button type="button" class="btn btn-primary" onclick="ProcessThread(<?= $board->getId()?>)">Create Thread</button>
         </header>
     </article>
 </section>
