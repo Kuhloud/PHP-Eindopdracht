@@ -1,7 +1,6 @@
 <?php
 require __DIR__ . '/controller.php';
 require __DIR__ . '/../services/boardservice.php';
-require __DIR__ . '/../services/threadservice.php';
 
 class BoardController extends Controller {
 
@@ -30,7 +29,6 @@ class BoardController extends Controller {
         $board = $this->boardService->getBoardById($boardId);
 
         require __DIR__ . "/../views/board/board.php";
-        $_SESSION['previous_url'] = $_SERVER['REQUEST_URI'];
 
 
     }
