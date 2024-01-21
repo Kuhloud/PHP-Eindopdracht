@@ -22,7 +22,7 @@ class Board implements \JsonSerializable {
         return $this->board_id;
     }
 
-public function getBoardName(): string
+    public function getBoardName(): string
     {
         return $this->board_name;
     }
@@ -60,7 +60,7 @@ public function getBoardName(): string
 
         return $this;
     }
-public function getTotalMessages(): int
+    public function getTotalMessages(): int
     {
         return $this->total_messages;
     }
@@ -71,5 +71,3 @@ public function getTotalMessages(): int
         return $this;
     }
 }
-
-?>

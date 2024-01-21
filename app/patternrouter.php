@@ -55,8 +55,14 @@ class PatternRouter
         }
         // dynamically call relevant controller method
 
-            $controllerObj = new $controllerName;
-            $controllerObj->{$methodName}();
-
+        $controllerObj = new $controllerName;
+        // for board.php
+        if ($methodName != 'index' && $methodName != 'board') {
+            $boardName = $explodedUri[1];
+            $boardId = $controllerObj->getBoardIdWithName($boardName); 
+            $_GET['board_id'] = $boardId; 
+            $methodName = 'board'; 
+        }
+        $controllerObj->{$methodName}();
     }
 }

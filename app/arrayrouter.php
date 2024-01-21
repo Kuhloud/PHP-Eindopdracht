@@ -28,4 +28,3 @@ class ArrayRouter {
         $controllerObj->$method();
     }
 }
-?>

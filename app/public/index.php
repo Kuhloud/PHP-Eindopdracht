@@ -1,6 +1,6 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Origin: http://localhost/user, http://localhost/board, http://localhost/thread, http://localhost/");
+header("Access-Control-Allow-Headers: http://localhost/user, http://localhost/board,  http://localhost/thread, http://localhost/");
 
 require __DIR__ . '/../patternrouter.php';
 

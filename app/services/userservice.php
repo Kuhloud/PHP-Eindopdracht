@@ -2,7 +2,7 @@
 require __DIR__ . '/../repositories/boardrepository.php';
 
 
-class BoardService {
+class UserService {
     public function getAll() {
         // retrieve data
         $repository = new BoardRepository();

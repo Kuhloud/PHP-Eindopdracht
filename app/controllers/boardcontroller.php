@@ -1,10 +1,11 @@
 <?php
 require __DIR__ . '/controller.php';
 require __DIR__ . '/../services/boardservice.php';
+require __DIR__ . '/../services/threadservice.php';
 
 class BoardController extends Controller {
 
-    private $boardService; 
+    private $boardService;
 
     // initialize services
     function __construct() {
@@ -21,5 +22,20 @@ class BoardController extends Controller {
         // displayView maps this to /views/boards/index.php automatically
         $this->displayView($boards);
     }
+    
+    public function board() {  
+
+        $boardId = $_GET['board_id'];
+
+        $board = $this->boardService->getBoardById($boardId);
+
+        require __DIR__ . "/../views/board/board.php";
+        $_SESSION['previous_url'] = $_SERVER['REQUEST_URI'];
+
+
+    }
+    public function getBoardIdWithName($boardName) {
+        // retrieve data
+        return $this->boardService->getBoardIdWithName($boardName);
+    }
 }
-?>

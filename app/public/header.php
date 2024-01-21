@@ -4,12 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="img/Forum_Logo.png" sizes="16x16" type="image/png">
+    <script src="app.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <title>Home - Inholland Forum</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
-<body>
+<body class="text-center">
 <header>
-    <img id="logo" src="./img/Forum_Logo.png" title="Inholland University of Applied Sciences" alt="Inholland Logo">
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark" style="background-color: #E30380;">
+        <section>
+        <a class="navbar-brand" href="/">
+            <img id="logo" src="/img/Forum_Logo.png" title="Inholland University of Applied Sciences" alt="Inholland Logo">
+            InHolland Forum
+        </a>
+        </section>
+        <section class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a href="/">
+                    Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/board">
+                    Boards
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user">
+                    Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                    Sign in
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </nav>
 </header>
