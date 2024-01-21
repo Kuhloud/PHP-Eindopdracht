@@ -1,15 +1,13 @@
 <?php
-require __DIR__ . '/../../services/articleservice.php';
 
-class ArticleController
+class ApiController
 {
 
-    private $articleService;
+
 
     // initialize services
     function __construct()
     {
-        $this->articleService = new ArticleService();
     }
 
     // router maps this to /api/article automatically
@@ -17,6 +15,6 @@ class ArticleController
     {
 
 
+
     }
 }
-?>

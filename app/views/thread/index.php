@@ -1,4 +1,4 @@
-<?php include ('./header.php'); ?>
+<?php include ('./header.php') ?>
 <title>Post thread - Inholland Forum</title>
 <section class="container">
         <h1 class="mt-5">TODO App</h1>
@@ -26,4 +26,4 @@
             </div>
         </div>
 </section>
-<?php include ('./footer.php'); ?>
+<?php include ('./footer.php') ?>

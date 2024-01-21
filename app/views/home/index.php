@@ -1,4 +1,4 @@
-<?php include ('./header.php'); ?>
+<?php include ('./header.php') ?>
 <title>Home - Inholland Forum</title>
 <section class="container">
     <article class="row">
@@ -8,4 +8,4 @@
         </header>
     </article>
 </section>
-<?php include ('./footer.php'); ?>
+<?php include ('./footer.php') ?>

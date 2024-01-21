@@ -1,11 +1,9 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost/login, http://localhost/user, http://localhost/board, http://localhost/thread, http://localhost/");
-header("Access-Control-Allow-Headers: http://localhost/login ,http://localhost/user, http://localhost/board,  http://localhost/thread, http://localhost/");
+header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Methods: GET, POST');
+header("Access-Control-Allow-Headers: *");
 
 require __DIR__ . '/../patternrouter.php';
-ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-error_reporting(-1);
 
 $uri = trim($_SERVER['REQUEST_URI'], '/');
 

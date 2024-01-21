@@ -13,17 +13,17 @@ class UserController extends Controller {
 
     // router maps this to /article and /article/index automatically
     public function index() {
-      
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
     }
     public function register() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            $email = $_POST['email'];
+            $username = $_POST['inputUsername'];
+            $email = $_POST['inputEmail'];
+            $password = $_POST['inputPassword'];
             if (!$this->checkForErrors($username, $password, $email)) {
                 $this->userService->insert($username, $password, $email);
-                header("Location: /");
             }
         } 
     }
