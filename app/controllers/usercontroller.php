@@ -16,16 +16,16 @@ class UserController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = htmlspecialchars($_POST['inputUsername']);
             $email = htmlspecialchars($_POST['inputEmail']);
-            $password = htmlspecialchars($_POST['inputPassword']);
-            $errorMessage = $this->checkForErrors($username, $password, $email);
+            $password = $_POST['inputPassword'];
+            $errorMessage = $this->checkForErrors($username, $email, $password);
             if (empty($errorMessage)) {
-                $this->userService->insert($username, $password, $email);
+                $this->userService->insert($username, $email, $password);
                 header("Location: /");
             }
         } 
         require __DIR__ . "/../views/user/index.php";
     }
-    function checkForErrors($username, $password, $email) {
+    function checkForErrors($username, $email, $password) {
         if (empty($username)) {
             $errorMessage = "Username is required";
         }

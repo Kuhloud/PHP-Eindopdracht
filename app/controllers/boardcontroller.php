@@ -29,7 +29,6 @@ class BoardController extends Controller {
         $board = $this->boardService->getBoardById($boardId);
 
         require __DIR__ . "/../views/board/board.php";
-        require __DIR__ . "/../views/thread/index.php";
 
 
     }

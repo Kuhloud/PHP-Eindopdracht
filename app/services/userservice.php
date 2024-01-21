@@ -16,12 +16,12 @@ class UserService {
         $repository = new UserRepository();
         return $repository->isExistingEmail($email);
     }
-    public function insert($username, $plainPassword, $email) {
+    public function insert($username, $email, $plainPassword) {
         
         $repository = new UserRepository();
 
         $hashedPassword = $this->hashPassword($plainPassword);
-        $repository->insert($username, $hashedPassword, $email);       
+        $repository->insert($username, $email , $hashedPassword);       
     }
 
     function hashPassword($plainPassword) {
