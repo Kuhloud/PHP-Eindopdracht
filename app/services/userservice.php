@@ -7,14 +7,14 @@ class UserService {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
 
     }
-    function isUniqueUsername($username) {
+    function isExistingUsername($username) {
         $repository = new UserRepository();
-        return $repository->isUniqueUsername($username);
+        return $repository->isExistingUsername($username);
     }
-    function isUniqueEmail($email)
+    function isExistingEmail($email)
     {
         $repository = new UserRepository();
-        return $repository->isUniqueEmail($email);
+        return $repository->isExistingEmail($email);
     }
     public function insert($username, $plainPassword, $email) {
         

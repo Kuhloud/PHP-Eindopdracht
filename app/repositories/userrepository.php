@@ -7,7 +7,7 @@ class UserRepository extends Repository
         function insert($username, $password, $email)
         {
                 $stmt = $this->connection->prepare("INSERT into users VALUES (username, email, password, joined_at) 
-                VALUES (:username, :email, :password, now())");
+                VALUES (:username, :email, :password, NOW())");
                 $stmt->bindParam(':username', $username);
                 $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':password', $password);
@@ -15,16 +15,24 @@ class UserRepository extends Repository
                 $stmt->execute();
 
         }
-        function isUniqueUsername($username) {
+        function isExistingUsername($username) {
                 $stmt = $this->connection->prepare("SELECT * FROM users WHERE username = ?");
                 $stmt->execute([$username]);
-                $result = $stmt->get_result();
-                return $result->num_rows === 0;
+                if ($stmt->fetchAll()) 
+                {
+                        return true;
+                } else {
+                        return false;
+                }
         }
-        function isUniqueEmail($email){
+        function isExistingEmail($email){
                 $stmt = $this->connection->prepare("SELECT * FROM users WHERE email = ?");
                 $stmt->execute([$email]);
-                $result = $stmt->get_result();
-                return $result->num_rows === 0;
+                if ($stmt->fetchAll()) 
+                {
+                        return true;
+                } else {
+                        return false;
+                }
         }
 }

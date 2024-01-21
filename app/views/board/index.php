@@ -1,4 +1,4 @@
-<?php include ('./header.php'); ?>
+<?php include ('./header.php') ?>
 <title>Boards - Inholland Forum</title>
 <section class="container">
     <article class="row">
@@ -11,7 +11,7 @@
 <?php
 foreach($model as $board) {
     ?>
-    <a href="/board/<?php echo urlencode($board->getBoardName()); ?>" class="clickable-card" >
+    <a href="/board/<?php echo urlencode($board->getBoardName());?>" class="clickable-card" >
     <section class="card">
         <article class="card-body">
             <h4 class="card-title"><?= ucfirst($board->getBoardName())?></h4>
@@ -24,5 +24,5 @@ foreach($model as $board) {
     <?php
 }
 ?>
-<?php include ('./footer.php'); ?>
+<?php include ('./footer.php') ?>
 

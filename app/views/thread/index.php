@@ -1,7 +1,8 @@
 <?php include ('./header.php') ?>
 <title>Post thread - Inholland Forum</title>
+
 <section class="container">
-        <h1 class="mt-5">TODO App</h1>
+        <h1 class="mt-5"></h1>
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
@@ -16,10 +17,9 @@
                                     id="todoText"></textarea>
                                     <span id="passwordHelpInline" class="form-text">
                                         Must be 8-20 characters long.
-                                      </span>
-                                  
+                                    </span> 
                             </div>
-                            <button type="button" class="btn btn-primary" onclick="addItem();">Add</button>
+                            <button type="button" class="btn btn-primary">Add</button>
                         </form>
                     </div>
                 </div>

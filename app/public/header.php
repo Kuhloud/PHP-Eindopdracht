@@ -26,17 +26,17 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="board">
+                    <a href="/board">
                     Boards
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="/login">
                     Login
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="user">
+                    <a href="/user">
                     Sign in
                     </a>
                 </li>

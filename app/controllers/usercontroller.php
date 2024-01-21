@@ -13,19 +13,17 @@ class UserController extends Controller {
 
     // router maps this to /article and /article/index automatically
     public function index() {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-    }
-    public function register() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $username = $_POST['inputUsername'];
-            $email = $_POST['inputEmail'];
-            $password = $_POST['inputPassword'];
-            if (!$this->checkForErrors($username, $password, $email)) {
+            $username = htmlspecialchars($_POST['inputUsername']);
+            $email = htmlspecialchars($_POST['inputEmail']);
+            $password = htmlspecialchars($_POST['inputPassword']);
+            $errorMessage = $this->checkForErrors($username, $password, $email);
+            if (empty($errorMessage)) {
                 $this->userService->insert($username, $password, $email);
+                header("Location: /");
             }
         } 
+        require __DIR__ . "/../views/user/index.php";
     }
     function checkForErrors($username, $password, $email) {
         if (empty($username)) {
@@ -40,16 +38,15 @@ class UserController extends Controller {
         elseif ($this->userService->isValidEmail($email) == false) {
             $errorMessage = "Email is not valid";
         }
-        elseif ($this->userService->isUniqueUsername($username) == false) {
+        elseif ($this->userService->isExistingUsername($username) == true) {
             $errorMessage = "Username already exists";
         }
-        elseif ($this->userService->isUniqueEmail($email) == false) {
+        elseif ($this->userService->isExistingEmail($email) == true) {
             $errorMessage = "Email already exists";
         }
-        else{
-            return false;
+        else {
+            $errorMessage = "";
         }
-        echo $errorMessage;
-        return true;
+        return $errorMessage;
     }
 }

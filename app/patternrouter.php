@@ -9,7 +9,6 @@ class PatternRouter
         }
         return $uri;
     }
-
     public function route($uri)
     {
         // Path algorithm

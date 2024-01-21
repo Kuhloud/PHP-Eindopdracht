@@ -15,7 +15,7 @@ class ThreadController extends Controller {
     public function index() {
       
         // Retrieve the previous URL
-        $boardId = isset($_SESSION['board_id']) ? (int)$_SESSION['board_id'] : 0;
+        $boardId = $_GET['board_id'];
 
         
         // retrieve data 
