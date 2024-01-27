@@ -4,9 +4,9 @@ require __DIR__ . '/../models/user.php';
 
 class UserRepository extends Repository
 {
-        function insert($username, $email , $hashedPassword)
+        function insert($username, $email, $hashedPassword)
         {
-                $stmt = $this->connection->prepare("INSERT into users VALUES (username, email, password, joined_at) 
+                $stmt = $this->connection->prepare("INSERT into users (username, email, password, joined_at) 
                 VALUES (:username, :email, :password, NOW())");
                 $stmt->bindParam(':username', $username);
                 $stmt->bindParam(':email', $email);
