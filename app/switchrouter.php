@@ -2,9 +2,13 @@
 class SwitchRouter {
     public function route($uri) {    
         // using a simple switch statement to route URL's to controller methods
+        $explodedUri = explode('/', $uri);
+        if (!isset($explodedUri[1]) || empty($explodedUri[1])) {
+            $explodedUri[1] = null;
+        }
         switch($uri) {
 
-            case '/': 
+            case '': 
                 require __DIR__ . '/controllers/homecontroller.php';
                 $controller = new HomeController();
                 $controller->index();
@@ -13,6 +17,23 @@ class SwitchRouter {
                 require __DIR__ . '/controllers/boardcontroller.php';
                 $controller = new BoardController();
                 $controller->index();
+                break;
+            case "board/$explodedUri[1]": 
+                require __DIR__ . '/controllers/boardcontroller.php';
+                $controller = new BoardController();
+                $boardId = $controller->getBoardIdWithName($explodedUri[1]);
+                $_GET['board_id'] = $boardId;
+                $controller->board();
+                break;
+            case 'user': 
+                require __DIR__ . '/controllers/usercontroller.php';
+                $controller = new UserController();
+                $controller->index();
+                break;
+            case 'login': 
+                require __DIR__ . '/controllers/usercontroller.php';
+                $controller = new UserController();
+                $controller->login();
                 break;
             default:
                 http_response_code(404);

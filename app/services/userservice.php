@@ -21,7 +21,13 @@ class UserService {
         $repository = new UserRepository();
 
         $hashedPassword = $this->hashPassword($plainPassword);
-        $repository->insert($username, $email , $hashedPassword);       
+        $user = new User($username, $email, $hashedPassword);
+        $repository->insert($user);       
+    }
+    public function getUser($userInput, $password)
+    {
+        $repository = new UserRepository();
+        return $repository->getUser($userInput, $password);
     }
 
     function hashPassword($plainPassword) {

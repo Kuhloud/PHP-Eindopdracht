@@ -1,6 +1,6 @@
 <?php include ('./header.php') ?>
 <title>Sign up - Inholland Forum</title>
-<section id="signup">
+<section>
     <form method="POST" class="form-signin"> 
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <?php if(isset($errorMessage) && !empty($errorMessage)): ?>

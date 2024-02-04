@@ -7,11 +7,11 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
-require __DIR__ . '/../patternrouter.php';
+require __DIR__ . '/../switchrouter.php';
 
 $uri = trim($_SERVER['REQUEST_URI'], '/');
 
-$router = new PatternRouter();
+$router = new SwitchRouter();
 
 try {
     $router->route($uri);

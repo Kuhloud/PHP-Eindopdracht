@@ -20,10 +20,42 @@ class UserController extends Controller {
             $errorMessage = $this->checkForErrors($username, $email, $password);
             if (empty($errorMessage)) {
                 $this->userService->insert($username, $email, $password);
+                $user = $this->userService->getUser($username, $password);
+                $this->currentUser($user);
                 header("Location: /");
             }
         } 
         require __DIR__ . "/../views/user/index.php";
+    }
+    public function login()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $input = htmlspecialchars($_POST['UserInput']);
+            $password = $_POST['UserPassword'];
+            $errorMessage = $this->checkValidUser($input, $password);
+            if (empty($errorMessage)) {
+                $user = $this->userService->getUser($input, $password);
+                $this->currentUser($user);
+                header("Location: /");
+            }
+        } 
+        require __DIR__ . "/../views/user/login.php";
+    }
+    function currentUser($user)
+    {
+        $_SESSION['user'] = $user;
+    }
+    function checkValidUser($input, $password) {
+        if (empty($input)) {
+            $errorMessage = "Username/Email address is required";
+        }
+        elseif (empty($password)) {
+            $errorMessage = "Password is required";
+        }
+        else {
+            $errorMessage = "";
+        }
+        return $errorMessage;
     }
     function checkForErrors($username, $email, $password) {
         if (empty($username)) {
