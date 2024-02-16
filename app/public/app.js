@@ -21,6 +21,27 @@ async function loadData() {
     });
 
 }
+function updateNavbar() {
+    var navbarItems = document.getElementById("navbar-items");
+
+    // Check if the user is logged in
+    if (!isLoggedIn()) {
+        navbarItems.innerHTML = `
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user">Sign in</a>
+                </li>
+            </ul>`;
+    } else {
+        navbarItems.innerHTML = `
+            <li class="nav-item">
+                <span class="nav-link">Welcome, ${$_SESSION['user']}</span>
+            </li>`;
+    }
+}
 
 async function sendForm() {
 

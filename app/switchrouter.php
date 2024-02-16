@@ -6,6 +6,9 @@ class SwitchRouter {
         if (!isset($explodedUri[1]) || empty($explodedUri[1])) {
             $explodedUri[1] = null;
         }
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+    }
         switch($uri) {
 
             case '': 
@@ -34,6 +37,11 @@ class SwitchRouter {
                 require __DIR__ . '/controllers/usercontroller.php';
                 $controller = new UserController();
                 $controller->login();
+                break;
+            case 'logout':
+                require __DIR__ . '/controllers/usercontroller.php';
+                $controller = new UserController();
+                $controller->logout();
                 break;
             default:
                 http_response_code(404);

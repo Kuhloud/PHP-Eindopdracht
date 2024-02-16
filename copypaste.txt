@@ -18,3 +18,14 @@
     </form>
 </section>
 <?php include ('./footer.php') ?>
+
+    public function currentUser($user)
+    {
+        $_SESSION['username'] = $user->getUsername();
+    }
+    public function startSession(){
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+            $_SESSION['username'] = null;
+    }
+    }

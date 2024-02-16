@@ -13,6 +13,7 @@ class UserController extends Controller {
 
     // router maps this to /article and /article/index automatically
     public function index() {
+        $this->startSession();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = htmlspecialchars($_POST['inputUsername']);
             $email = htmlspecialchars($_POST['inputEmail']);
@@ -29,6 +30,7 @@ class UserController extends Controller {
     }
     public function login()
     {
+        $this->startSession();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $input = htmlspecialchars($_POST['UserInput']);
             $password = $_POST['UserPassword'];
@@ -41,9 +43,20 @@ class UserController extends Controller {
         } 
         require __DIR__ . "/../views/user/login.php";
     }
+    public function logout()
+    {
+        session_destroy();
+        header("Location: /");
+    }
     function currentUser($user)
     {
-        $_SESSION['user'] = $user;
+        $_SESSION['username'] = $user->getUsername();
+    }
+    function startSession(){
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+            $_SESSION['username'] = null;
+    }
     }
     function checkValidUser($input, $password) {
         if (empty($input)) {

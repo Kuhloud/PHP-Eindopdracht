@@ -19,7 +19,7 @@
         </a>
         </section>
         <section class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navigationBar">
             <li class="nav-item active">
                 <a class="nav-link active" aria-current="page" href="/">
                     Home
@@ -33,7 +33,16 @@
         </ul>
             <?php
         // Check if the user is logged in
-        if ($_SESSION['user'] == null) {
+        if (isset($_SESSION['username'])) {
+            echo '<li class="nav-item">
+            <span class="nav-link">Welcome, ' . $_SESSION['username'] . '</span>
+          </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">
+                    Log out
+                </a>
+            </li>';
+        } else {
             echo '<ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="/login">
@@ -46,10 +55,6 @@
                 </a>
             </li>
         </ul>';
-        } else {
-            echo '<li class="nav-item">
-            <span class="nav-link">Welcome, ' . htmlspecialchars($user) . '</span>
-          </li>';
         }
         ?>
         </section>
