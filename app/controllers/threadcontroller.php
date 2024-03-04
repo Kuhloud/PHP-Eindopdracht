@@ -15,12 +15,23 @@ class ThreadController extends Controller {
     public function index() {
       
         // Retrieve the previous URL
-        $boardId = $_GET['board_id'];
+        require __DIR__ . "/../views/thread/index.php";
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = htmlspecialchars($_POST['inputUsername']);
+            $email = htmlspecialchars($_POST['inputEmail']);
+            $password = $_POST['inputPassword'];
+            $errorMessage = $this->checkForErrors($username, $email, $password);
+            if (empty($errorMessage)) {
+                $this->threadService->insert($_SESSION['board']->getId());
+                $user = $this->userService->getUser($username, $password);
+                $this->currentUser($user);
+                header("Location: /");
+            }
+        } 
 
         
         // retrieve data 
 
 
-        require __DIR__ . "/../views/thread/index.php";
     }
 }

@@ -34,12 +34,15 @@ class PatternRouter
         if (!isset($explodedUri[0]) || empty($explodedUri[0])) {
             $explodedUri[0] = $defaultcontroller;
         }
-        $controllerName = $explodedUri[0] . "controller";
-
-        if (!isset($explodedUri[1]) || empty($explodedUri[1])) {
+        if (!empty($explodedUri[2])) {
+            $explodedUri[0] = $explodedUri[2];
+        }
+        if (!isset($explodedUri[1]) || empty($explodedUri[1]) || isset($explodedUri[2])) {
             $explodedUri[1] = $defaultmethod;
         }
+        $controllerName = $explodedUri[0] . "controller";
         $methodName = $explodedUri[1];
+        
 
         // load the file with the controller class
         $filename = __DIR__ . '/controllers/' . $controllerName . '.php';
@@ -54,14 +57,9 @@ class PatternRouter
         }
         // dynamically call relevant controller method
 
-        // for login.php
-        if ($explodedUri[0] == 'login') {
-            $controllerName = "usercontroller";
-            $methodName = "login";
-        }
         $controllerObj = new $controllerName;
         // for board.php
-        if ($controllerName == 'boardcontroller' && $methodName != 'index' && $methodName != 'board') {
+        if ($controllerName == 'boardcontroller' && $methodName != 'index') {
             $boardName = $explodedUri[1];
             $boardId = $controllerObj->getBoardIdWithName($boardName); 
             $_GET['board_id'] = $boardId; 

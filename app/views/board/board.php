@@ -5,7 +5,9 @@
         <header class="col-12">
             <h2><?= $board->getBoardName()?></h2>
             <p><?= $board->getBoardDescription()?></p>
-            <a class="btn btn-primary" href="/board/<?php echo urlencode($board->getBoardName()); ?>/thread" role="button">Create Thread</a>
+            <?php if (isset($_SESSION['username'])) : ?>
+             <a href="/board/<?php echo urlencode($board->getBoardName());?>/thread" class="btn btn-primary" role="button">Create Thread</a>
+            <?php endif; ?>
         </header>
     </article>
 </section>

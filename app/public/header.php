@@ -30,33 +30,34 @@
                     Boards
                 </a>
             </li>
-        </ul>
-            <?php
-        // Check if the user is logged in
-        if (isset($_SESSION['username'])) {
-            echo '<li class="nav-item">
-            <span class="nav-link">Welcome, ' . $_SESSION['username'] . '</span>
-          </li>
             <li class="nav-item">
-                <a class="nav-link" href="/logout">
+                <a class="nav-link" href="/api">
+                    Api test
+                </a>
+            </li>
+        <?php if (isset($_SESSION['username'])) : ?>
+            <!-- Display welcome message and logout link if user is logged in -->
+            <li class="nav-item">
+                <span class="nav-link">Welcome, <?= $_SESSION['username'] ?></span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/logout">
                     Log out
                 </a>
-            </li>';
-        } else {
-            echo '<ul class="navbar-nav">
+            </li>
+        <?php else : ?>
             <li class="nav-item">
-                <a class="nav-link" href="/login">
+                <a class="nav-link" href="/user/login">
                     Login
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/user">
+                <a class="nav-link" href="/user/signin">
                     Sign in
                 </a>
             </li>
-        </ul>';
-        }
-        ?>
+        <?php endif; ?>
+        </ul>
         </section>
     </nav>
 </header>

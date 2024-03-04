@@ -1,14 +1,14 @@
 <?php
 
-class ApiController
+class ThreadController
 {
 
-    private $userService;
+    private $threadService;
 
     // initialize services
     function __construct()
     {
-        $this->userService = new UserService();
+        $this->threadService = new ThreadService();
     }
 
     // router maps this to /api/article automatically
@@ -18,8 +18,8 @@ class ApiController
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
             // return all articles in the database as JSON
-            $articles = $this->userService->getUser();
-            $json = json_encode($articles);
+            $threads = $this->threadService->getThreads($_SESSION['board']->getId());
+            $json = json_encode($threads);
             header("Content-type: application/json");
             echo $json;
         }
@@ -32,12 +32,12 @@ class ApiController
             $json = file_get_contents('php://input');
             $object = json_decode($json);
 
-            $article = new Article();
-            $article->setTitle($object->title);
-            $article->setContent($object->content);
-            $article->setAuthor("Bro Grammer");
+            $thread = new Thread();
+            $thread->setBoardId($_SESSION['board']->getId());
+            $thread->setTitle($object->title);
+            $thread->setDescription($object->content);
 
-            $this->articleService->insert($article);
+            $this->threadService->insert($thread);
         }
 
 

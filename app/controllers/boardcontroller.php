@@ -28,6 +28,8 @@ class BoardController extends Controller {
 
         $board = $this->boardService->getBoardById($boardId);
 
+        $_SESSION['board'] = $board;
+
         require __DIR__ . "/../views/board/board.php";
 
 

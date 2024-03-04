@@ -6,6 +6,9 @@ class SwitchRouter {
         if (!isset($explodedUri[1]) || empty($explodedUri[1])) {
             $explodedUri[1] = null;
         }
+        if (!isset($explodedUri[2]) || empty($explodedUri[2])) {
+            $explodedUri[2] = null;
+        }
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
     }
@@ -27,6 +30,12 @@ class SwitchRouter {
                 $boardId = $controller->getBoardIdWithName($explodedUri[1]);
                 $_GET['board_id'] = $boardId;
                 $controller->board();
+                break;
+            case "board/$explodedUri[1]/thread": 
+                require __DIR__ . '/controllers/threadcontroller.php';
+                $_SESSION['boardName'] = $explodedUri[1];
+                $controller = new ThreadController();
+                $controller->index();
                 break;
             case 'user': 
                 require __DIR__ . '/controllers/usercontroller.php';

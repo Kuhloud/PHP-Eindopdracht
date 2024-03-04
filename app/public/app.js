@@ -1,14 +1,24 @@
+function fetchData() {
+
+    // use fetch to retrieve the articles from http://localhost/api/thread
+
+    fetch('http://localhost/api/thread')
+    .then(response => response.json())
+    .then((out) => {
+        console.log('Threads: ', out);
+    }).catch(err => console.error(err));
+}
 async function loadData() {
 
-    // use fetch to retrieve the articles from http://localhost/api/user
+    // use fetch to retrieve the articles from http://localhost/api/thread
 
-    const response = await fetch("http://localhost/api/user");
+    const response = await fetch("http://localhost/api/thread");
     const user = await response.json();
     console.log(user);
 
     // Create an H2 with the title and a p with the content for every article
     // And display the articles on the page by appending them to the 'articles' div
-    const div = document.getElementById('articles');
+    const div = document.getElementById('threads');
     div.innerHTML = '';
 
     articles.forEach(article => {
@@ -19,28 +29,17 @@ async function loadData() {
         div.appendChild(h2);
         div.appendChild(p);
     });
-
 }
-function updateNavbar() {
-    var navbarItems = document.getElementById("navbar-items");
+function createThread()
+{
+        // Get the current URL
+        const currentUrl = window.location.href;
 
-    // Check if the user is logged in
-    if (!isLoggedIn()) {
-        navbarItems.innerHTML = `
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/user">Sign in</a>
-                </li>
-            </ul>`;
-    } else {
-        navbarItems.innerHTML = `
-            <li class="nav-item">
-                <span class="nav-link">Welcome, ${$_SESSION['user']}</span>
-            </li>`;
-    }
+        // Append '/thread' to the current URL
+        const newUrl = `${currentUrl}/thread`;
+        
+        // Redirect to the new URL
+        window.location.href = newUrl;
 }
 
 async function sendForm() {
@@ -51,8 +50,8 @@ async function sendForm() {
         content: document.getElementById('content').value
     };
 
-    // Post the data to http://localhost/api/article using fetch
-    const response = await fetch('http://localhost/api/article',
+    // Post the data to http://localhost/api/thread using fetch
+    const response = await fetch('http://localhost/api/thread',
         {
             method: 'POST',
             headers: {

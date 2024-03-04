@@ -4,7 +4,7 @@ require __DIR__ . '/../models/thread.php';
 
 class ThreadRepository extends Repository
 {
-        function getAll($boardId)
+        function getThreads($boardId)
         {
 
                 $stmt = $this->connection->prepare("SELECT * FROM threads WHERE board_id = ?");
@@ -19,7 +19,11 @@ class ThreadRepository extends Repository
 
         function insert($thread)
         {
-                $stmt = $this->connection->prepare("INSERT into threads (board_name) VALUES (?)");
+                $stmt = $this->connection->prepare("INSERT into threads (board_name) 
+                VALUES (:board_id, :title, :description, NOW())");
+                $stmt->bindParam(':username', $user->getUsername());
+                $stmt->bindParam(':email', $user->getEmail());
+                $stmt->bindParam(':password', $user->getPassword());
 
                 $stmt->execute([$thread->getBoardName()]);
 

@@ -8,6 +8,16 @@ private string $description;
 private DateTime $created_at;
 
 public function jsonSerialize() : mixed {
-    return get_object_vars($this);
+    $vars = get_object_vars($this);
+    return $vars;
+}
+public function setBoardId(int $board_id) {
+    $this->board_id = $board_id;
+}
+public function setTitle(string $title) {
+    $this->title = $title;
+}
+public function setDescription(string $description) {
+    $this->description = $description;
 }
 }

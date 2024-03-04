@@ -3,10 +3,10 @@ require __DIR__ . '/../repositories/threadrepository.php';
 
 
 class ThreadService {
-    public function getAll($boardId) {
+    public function getThreads($boardId) {
         // retrieve data
         $repository = new ThreadRepository();
-        $threads = $repository->getAll($boardId);
+        $threads = $repository->getThreads($boardId);
         return $threads;
     }
 
