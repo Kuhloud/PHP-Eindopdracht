@@ -11,7 +11,7 @@
 <?php
 foreach($model as $board) {
     ?>
-    <a href="/board/<?php echo urlencode($board->getBoardName());?>" class="clickable-card" >
+    <a href="/board/<?php echo urlencode($board->getBoardId());?>" class="clickable-card" >
     <section class="card">
         <article class="card-body">
             <h4 class="card-title"><?= ucfirst($board->getBoardName())?></h4>
@@ -25,4 +25,3 @@ foreach($model as $board) {
 }
 ?>
 <?php include ('./footer.php') ?>
-

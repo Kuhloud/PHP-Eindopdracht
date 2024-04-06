@@ -7,8 +7,9 @@ class ThreadRepository extends Repository
         function getThreads($boardId)
         {
 
-                $stmt = $this->connection->prepare("SELECT * FROM threads WHERE board_id = ?");
-                $stmt->execute([$boardId]);
+                $stmt = $this->connection->prepare("SELECT * FROM threads WHERE board_id = :board_id");
+                $stmt->bindParam(':board_id', $boardId);
+                $stmt->execute();
 
                 $stmt->setFetchMode(PDO::FETCH_CLASS, 'Thread');
                 $threads = $stmt->fetchAll();
@@ -16,16 +17,32 @@ class ThreadRepository extends Repository
                 return $threads;
 
         }
-
-        function insert($thread)
+        function getThreadById($threadId)
         {
-                $stmt = $this->connection->prepare("INSERT into threads (board_name) 
-                VALUES (:board_id, :title, :description, NOW())");
-                $stmt->bindParam(':username', $user->getUsername());
-                $stmt->bindParam(':email', $user->getEmail());
-                $stmt->bindParam(':password', $user->getPassword());
 
-                $stmt->execute([$thread->getBoardName()]);
+                $stmt = $this->connection->prepare("SELECT * FROM threads WHERE thread_id = :thread_id");
+                $stmt->bindParam(':thread_id', $threadId);
+                $stmt->execute();
 
+                $stmt->setFetchMode(PDO::FETCH_CLASS, 'Thread');
+                $threads = $stmt->fetchAll();
+
+                return $threads;
+        }
+
+        function insert($board_id, $title, $first_post, $user_id)
+        {
+                $stmt = $this->connection->prepare("INSERT into threads (board_id, title, first_post, post_count, user_id) VALUES (:board_id, :title, :first_post, :user_id)");
+                $stmt->bindParam(':board_id', $board_id);
+                $stmt->bindParam(':title', $title);
+                $stmt->bindParam(':first_post', $first_post);
+                $stmt->bindParam(':user_id', $user_id);
+                $stmt->execute();
+        }
+        function updatePostCount($threadId)
+        {
+                $stmt = $this->connection->prepare("UPDATE threads SET post_count = post_count + 1 WHERE thread_id = :thread_id");
+                $stmt->bindParam(':thread_id', $threadId);
+                $stmt->execute();
         }
     }

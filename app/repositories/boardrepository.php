@@ -16,11 +16,12 @@ class BoardRepository extends Repository
                 return $boards;
 
         }
-        function getBoardById($boardId)
+        function getBoardById(int $boardId)
         {
 
-                $stmt = $this->connection->prepare("SELECT * FROM boards WHERE board_id = ?");
-                $stmt->execute([$boardId]);
+                $stmt = $this->connection->prepare("SELECT * FROM boards WHERE board_id = :boardId");
+                $stmt->bindParam(':boardId', $boardId);
+                $stmt->execute();
 
                 $stmt->setFetchMode(PDO::FETCH_CLASS, 'Board');
                 $board = $stmt->fetch();
@@ -31,8 +32,9 @@ class BoardRepository extends Repository
         function getBoardIdWithName(string $boardName)
         {
 
-                $stmt = $this->connection->prepare("SELECT board_id FROM boards WHERE board_name = ?");
-                $stmt->execute([$boardName]);
+                $stmt = $this->connection->prepare("SELECT board_id FROM boards WHERE board_name = :boardName");
+                $stmt->bindParam(':boardName', $boardName);
+                $stmt->execute();
 
                 $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
                 $boardId = $stmt->fetch();
@@ -43,7 +45,9 @@ class BoardRepository extends Repository
 
         function insert($board)
         {
-                $stmt = $this->connection->prepare("INSERT into boards (board_name) VALUES (?)");
+                $stmt = $this->connection->prepare("INSERT into boards (board_name, board_description) VALUES (:boardName, :boardDescription)");
+                $stmt->bindParam(':boardName', $board->getBoardName());
+                $stmt->bindParam(':boardDescription', $board->getBoardDescription());
 
                 $stmt->execute([$board->getBoardName()]);
 

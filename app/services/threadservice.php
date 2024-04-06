@@ -9,10 +9,16 @@ class ThreadService {
         $threads = $repository->getThreads($boardId);
         return $threads;
     }
+    public function getThreadById($threadId) {
+        // retrieve data
+        $repository = new ThreadRepository();
+        $thread = $repository->getThreadById($threadId);
+        return $thread;
+    }
 
     public function insert($thread) {
         // retrieve data
         $repository = new ThreadRepository();
-        $repository->insert($thread);        
+        $repository->insert($thread->getBoardId(), $thread->getTitle(), $thread->getFirstPost(), $thread->getUserId());        
     }
 }

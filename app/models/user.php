@@ -1,5 +1,5 @@
 <?php
-class User implements \JsonSerializable {
+class User {
 
 private int $user_id;
 private string $username;
@@ -8,15 +8,6 @@ private string $password;
 private string $joined_at;
 private int $role_id;
 
-// public function __construct($username, $email, $password) {
-//     $this->username = $username;
-//     $this->email = $email;
-//     $this->password = $password;
-// }
-
-public function jsonSerialize() : mixed {
-    return get_object_vars($this);
-}
 public function getUserId() : int {
     return $this->user_id;
 }
@@ -40,5 +31,8 @@ public function setPassword(string $password) {
 }
 public function getJoinedAt() : string {
     return $this->joined_at;
+}
+public function getRoleId() : int {
+    return $this->role_id;
 }
 }

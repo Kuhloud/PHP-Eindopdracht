@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Gegenereerd op: 21 jan 2024 om 21:28
+-- Gegenereerd op: 06 apr 2024 om 16:07
 -- Serverversie: 11.1.3-MariaDB-1:11.1.3+maria~ubu2204
 -- PHP-versie: 8.2.12
 
@@ -32,7 +32,7 @@ CREATE TABLE `boards` (
   `board_name` varchar(255) NOT NULL,
   `board_description` varchar(255) NOT NULL,
   `total_threads` int(11) NOT NULL DEFAULT 0,
-  `total_messages` int(11) DEFAULT 0
+  `total_messages` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -81,8 +81,10 @@ CREATE TABLE `threads` (
   `thread_id` int(11) NOT NULL,
   `board_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT curdate()
+  `first_post` text NOT NULL,
+  `post_count` int(11) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT curdate(),
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -108,8 +110,15 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `joined_at` datetime NOT NULL DEFAULT curdate(),
-  `role_id` int(11) DEFAULT 1
+  `role_id` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `users`
+--
+
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `joined_at`, `role_id`) VALUES
+(1, 'TestMan1', 'Test_Man@hotmail.com', '$2y$10$BwsWY8TuQcGkJ0jJ1iOBvubQSY0m9l33WDhs61mJnBcN3itUSXolq', '2024-02-04 17:38:56', 1);
 
 -- --------------------------------------------------------
 
@@ -160,7 +169,8 @@ ALTER TABLE `tags`
 --
 ALTER TABLE `threads`
   ADD PRIMARY KEY (`thread_id`),
-  ADD KEY `board_id` (`board_id`);
+  ADD KEY `board_id` (`board_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexen voor tabel `thread_tags`
@@ -214,7 +224,7 @@ ALTER TABLE `threads`
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT voor een tabel `user_roles`
@@ -237,6 +247,7 @@ ALTER TABLE `posts`
 -- Beperkingen voor tabel `threads`
 --
 ALTER TABLE `threads`
+  ADD CONSTRAINT `fk_threads_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `threads_ibfk_1` FOREIGN KEY (`board_id`) REFERENCES `boards` (`board_id`);
 
 --

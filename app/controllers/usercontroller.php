@@ -41,6 +41,7 @@ class UserController extends Controller {
         } 
         require __DIR__ . "/../views/user/login.php";
     }
+
     public function logout()
     {
         session_destroy();
@@ -48,6 +49,7 @@ class UserController extends Controller {
     }
     function currentUser($user)
     {
+        $_SESSION['user'] = $user->getUserId();    
         $_SESSION['username'] = $user->getUsername();
     }
     function checkValidUser($input, $password) {

@@ -2,6 +2,7 @@
 require __DIR__ . '/controller.php';
 require __DIR__ . '/../services/boardservice.php';
 
+
 class BoardController extends Controller {
 
     private $boardService;
@@ -10,8 +11,6 @@ class BoardController extends Controller {
     function __construct() {
         $this->boardService = new BoardService();
     }
-
-    // router maps this to /article and /article/index automatically
     public function index() {
       
         // retrieve data 
@@ -20,22 +19,31 @@ class BoardController extends Controller {
         // show view, param = accessible as $model in the view
         // displayView maps this to /views/boards/index.php automatically
         $this->displayView($boards);
+
     }
     
     public function board() {  
 
-        $boardId = $_GET['board_id'];
-
+        $boardId = $_SESSION['board_id'];
         $board = $this->boardService->getBoardById($boardId);
+        $this->currentBoard($board);
 
-        $_SESSION['board'] = $board;
+        // $threads = $this->threadService->getThreads($board->getId());
+        // $this->displayView($threads);
+        
 
         require __DIR__ . "/../views/board/board.php";
-
-
     }
-    public function getBoardIdWithName($boardName) {
+    function currentBoard($board)
+    {
+        $_SESSION['currentboard'] = $board->getBoardName();
+    }
+    function getBoardByIdWithName($boardName) {
         // retrieve data
         return $this->boardService->getBoardIdWithName($boardName);
+    }
+    public function getBoardById($boardName) {
+        // retrieve data
+        return $this->boardService->getBoardById($boardName);
     }
 }

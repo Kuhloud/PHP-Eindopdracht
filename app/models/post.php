@@ -10,4 +10,22 @@ private DateTime $posted_at;
 public function jsonSerialize() : mixed {
     return get_object_vars($this);
 }
+public function setThreadId(int $thread_id) {
+    $this->thread_id = $thread_id;
+}
+public function getThreadId() {
+    return $this->thread_id;
+}
+public function setUserId(int $user_id) {
+    $this->user_id = $user_id;
+}
+public function getUserId() {
+    return $this->user_id;
+}
+public function setMessage(string $message) {
+    $this->message = $message;
+}
+public function getMessage() {
+    return $this->message;
+}
 }

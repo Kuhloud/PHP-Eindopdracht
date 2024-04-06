@@ -29,3 +29,150 @@
             $_SESSION['username'] = null;
     }
     }
+    require __DIR__ . '/../switchrouter.php';
+
+$uri = trim($_SERVER['REQUEST_URI'], '/');
+
+$router = new SwitchRouter();
+require __DIR__ . '/../patternrouter.php';
+
+$uri = trim($_SERVER['REQUEST_URI'], '/');
+
+$router = new PatternRouter();
+
+onclick="hideIdInURL()"
+href="/board/<?php echo urlencode($board->getBoardName());?>/thread"
+
+// Action 2: Make /board display all threads of a board
+return fetch('http://localhost/api/board', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
+    if (!response.ok) {
+        
+        // Note: We shouldn't actually send detailed backend errors to our clients 
+        // in a production environment. Log them in the backend instead.
+
+        const error = await response.text();
+        console.log(error);
+    }
+    
+    function testIfComplete($user) {
+        $requiredProperties = ['user_id', 'username', 'email', 'password', 'joined_at', 'role_id'];
+        $missingProperties = $this->hasIncompleteFields($user, $requiredProperties);
+        
+        if (empty($missingProperties)) {
+            echo "Object is complete";
+        } else {
+            echo "Incomplete fields: " . implode(', ', $missingProperties);
+        }
+    }
+        function testIfComplete($board) {
+        $requiredProperties = ['board_id', 'board_name', 'board_description', 'total_threads', 'total_messages'];
+        $missingProperties = $this->hasIncompleteFields($board, $requiredProperties);
+        
+        if (empty($missingProperties)) {
+            echo "Object is complete";
+        } else {
+            echo "Incomplete fields: " . implode(', ', $missingProperties);
+        }
+    }
+    function hasIncompleteFields($object, $requiredProperties) {
+        $objectProperties = array_keys((array)$object);
+        $missingProperties = array_diff($requiredProperties, $objectProperties);
+        return $missingProperties;
+    }
+    <script>
+    function createThread(user_id) {
+    alert('createThread() called');
+
+    // Create an object with the data from the form (title and first_post)
+    let formData = {
+        title: document.getElementById('threadTitle').value,
+        firstPost: document.getElementById('firstPost').value,
+        tags: document.getElementById('tags').value
+    };
+
+    // Create new thread / Post the data to http://localhost/api/thread using fetch
+    fetch('http://localhost/api/thread',
+        {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(
+                {
+                    title: formData.title,
+                    firstPost: formData.firstPost,
+                    user_id: user_id
+                }
+            )
+        })
+        .then(response => { response.json() })
+        .then(data => {
+            console.log('Success:', data);
+            addTags(data.thread_id, formData.tags);
+            createFirstPost(data.thread_id, data.first_post, user_id);
+        })
+        .catch(error => {
+            console.error('Error message:', error.message);
+            console.error('Error object:', error);
+        });
+}
+</script>
+<script>
+function addTags(thread_id, tags) 
+{
+            // Action 2: Turn first post into a post object
+            fetch('http://localhost/api/tag', 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                    {
+                        thread_id: thread_id,
+                        tags: tags,
+                    }
+                )
+            })        
+            .then(response => { response.json() })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('Error message:', error.message);
+                console.error('Error object:', error);
+            });
+}
+</script>
+<script>
+function createFirstPost(thread_id, first_post, user_id) 
+{
+    fetch('http://localhost/api/post', 
+    {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+            {
+                thread_id: thread_id,
+                message: first_post,
+                user_id: user_id
+            }
+        )
+    })
+    .then(response => { response.json() })
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch(error => {
+        console.error('Error message:', error.message);
+        console.error('Error object:', error);
+    });
+}
+</script>

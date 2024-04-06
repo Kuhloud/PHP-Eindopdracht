@@ -17,7 +17,7 @@ class Board implements \JsonSerializable {
      *
      * @return int
      */
-    public function getId(): int
+    public function getBoardId(): int
     {
         return $this->board_id;
     }

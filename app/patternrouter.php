@@ -60,11 +60,16 @@ class PatternRouter
         $controllerObj = new $controllerName;
         // for board.php
         if ($controllerName == 'boardcontroller' && $methodName != 'index') {
-            $boardName = $explodedUri[1];
-            $boardId = $controllerObj->getBoardIdWithName($boardName); 
-            $_GET['board_id'] = $boardId; 
+            $boardId = $explodedUri[1];
+            $boardId = $controllerObj->getBoardById($boardId);
+            $_SESSION['board_id'] = $explodedUri[1]; 
             $methodName = 'board'; 
         }
+        // // for thread.php
+        // if ($controllerName == 'boardcontroller' && $methodName != 'index' && isset($explodedUri[2]) != 'thread') {
+        //     $_SESSION['thread_id'] = $explodedUri[2]; 
+        //     $methodName = 'board'; 
+        // }
         $controllerObj->{$methodName}();
     }
 }

@@ -3,7 +3,7 @@ require __DIR__ . '/controller.php';
 require __DIR__ . '/../services/threadservice.php';
 
 
-class ThreadController extends Controller {
+class PostController extends Controller {
 
     private $threadService; 
 
@@ -16,11 +16,17 @@ class ThreadController extends Controller {
     public function index() {
         
         $currentboard = $_SESSION['currentboard'];
-        $userId = $_SESSION['user'];
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     // $threadTitle = htmlspecialchars($_POST['ThreadTitle']);
-        //     // $threadTags = htmlspecialchars($_POST['ThreadTags']);
-        // }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $threadTitle = htmlspecialchars($_POST['ThreadTitle']);
+            $password = $_POST['FirstPost'];
+            $errorMessage = $this->checkValidUser($input, $password);
+            if (empty($errorMessage)) {
+                $user = $this->userService->getUser($input, $password);
+                $this->currentUser($user);
+                header("Location: /");
+            }
+        } 
       
         // Retrieve the previous URL
         require __DIR__ . "/../views/thread/index.php";
