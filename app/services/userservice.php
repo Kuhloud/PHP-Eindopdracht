@@ -36,7 +36,11 @@ class UserService {
         $repository = new UserRepository();
         return $repository->getUser($userInput, $password);
     }
-
+    public function getUsername($userId)
+    {
+        $repository = new UserRepository();
+        return $repository->getUsername($userId);
+    }
     function hashPassword($plainPassword) {
         return password_hash($plainPassword, PASSWORD_DEFAULT);
     }

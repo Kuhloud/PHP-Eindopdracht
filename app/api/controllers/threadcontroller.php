@@ -72,12 +72,13 @@ class ThreadController extends ApiController
     public function threads()
     {
         if (!$this->getRequest()) {
-            return;
+            return json_encode("error: invalid request");;
         }
         try 
         {
+            $boardId = $_GET['board_id'];
             // return the thread as JSON
-            $thread = $this->threadService->getAllThreads();
+            $thread = $this->threadService->getThreadsByBoardId($boardId);
             header("Content-type: application/json");
             echo json_encode($thread);
         } catch (Exception $e) {

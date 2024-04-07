@@ -7,7 +7,7 @@
             <h2><?= $board->getBoardName()?></h2>
             <p><?= $board->getBoardDescription()?></p>
             <?php if (isset($_SESSION['username'])) : ?>
-             <a href="/board/<?php echo urlencode($board->getBoardId());?>/thread" class="btn btn-primary" role="button">Create Thread</a>
+             <a href="/board/<?php echo urlencode($board->getBoardId());?>/thread/createthread" class="btn btn-primary" role="button">Create Thread</a>
             <?php endif; ?>
         </header>
     </article>
@@ -16,5 +16,7 @@
                 echo "session not started";
             } 
         ?>
+</section>
+<section id="threads">
 </section>
 <?php include ('./footer.php') ?>

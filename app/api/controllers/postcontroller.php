@@ -40,6 +40,12 @@ class PostController extends ApiController
             echo json_encode(["status" => "error", "message" => $e->getMessage()], JSON_THROW_ON_ERROR);
         }
     }
+    public function user($userId)
+    {
+        $posts = $this->postService->getPostsByUserId($userId);
+        header("Content-type: application/json");
+        echo json_encode($posts);
+    }
     private function checkRequiredFields($firstPost)
     {
         $requiredFields = ['thread_id', 'user_id', 'first_post'];

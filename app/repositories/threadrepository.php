@@ -37,7 +37,7 @@ class ThreadRepository extends Repository
                 $stmt->execute();
 
                 $stmt->setFetchMode(PDO::FETCH_CLASS, 'Thread');
-                $threads = $stmt->fetchAll();
+                $threads = $stmt->fetch();
 
                 return $threads;
         }

@@ -29,11 +29,6 @@
                     Boards
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/home/test">
-                    Debug Test
-                </a>
-            </li>
         <?php 
         if (isset($_SESSION['username'])) 
         : ?>

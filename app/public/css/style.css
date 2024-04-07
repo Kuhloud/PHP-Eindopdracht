@@ -22,5 +22,16 @@ form{
     justify-content: center;
     width: 50%;
 }
+#threads
+{
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
+#tag-color
+{
+    background-color: #E30380;
+}
 
 

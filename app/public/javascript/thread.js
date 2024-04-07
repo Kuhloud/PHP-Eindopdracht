@@ -1,5 +1,4 @@
 function createThread(user_id, board_id) {
-    alert('createThread() called');
 
     const formData = {
         title: document.getElementById('threadTitle').value,
@@ -16,22 +15,26 @@ function createThread(user_id, board_id) {
             console.error('Thread not found:', threadData);
             return;
         }
-        createFirstPost(threadData.thread.thread_id, threadData.thread.first_post, threadData.thread.user_id);
-        if (formData.tags && formData.tags.length > 0) 
+        let promises = [];
+        if (formData.tags && formData.tags.length > 0 && formData.tags[0] != '') 
         {
-            return addTags(threadData.thread.thread_id, formData.tags);
+            promises.push(
+            addTags(threadData.thread.thread_id, formData.tags)
+            .then((tagData) => {
+                if (!tagData || !tagData.thread_id || !tagData.tags) {
+                    console.error('Tags not found:', tagData);
+                    return;
+                }
+                return addThreadTags(tagData.thread_id, tagData.tags);
+            })
+        );
         }
-    })
-    .then((tagData) => {
-        if (!tagData || !tagData.thread_id || !tagData.tags) {
-            console.error('Tags not found:', tagData);
-            return;
-        }
-        return addThreadTags(tagData.thread_id, tagData.tags);
+        promises.push(createFirstPost(threadData.thread.thread_id, threadData.thread.first_post, threadData.thread.user_id));
+        return Promise.all(promises);
     })
     .then(() => 
     {
-       // window.location.href = `http://localhost/board/${board_id}`;
+        window.location.href = `http://localhost/board/${board_id}`;
     })
     .catch(error => {
         console.error('Error:', error.message, 'Stack:', error.stack);
@@ -68,7 +71,6 @@ async function createNewThread(board_id, title, first_post, user_id)
     }
 }
 async function createFirstPost(thread_id, first_post, user_id) {
-
     try{
         const response = await fetch('http://localhost/api/post', {
             method: 'POST',
@@ -101,7 +103,7 @@ async function addTags(thread_id, tags) {
 }
 
 async function addThreadTags(thread_id, thread_tags) {
-    const threadTags = await processTags('thread_tag', thread_id, thread_tags);
+    const threadTags = await processTags('threadtag', thread_id, thread_tags);
     console.log('Tags added to thread:', threadTags);
 }
 async function processTags(url, thread_id, tags) {

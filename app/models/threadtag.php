@@ -1,5 +1,5 @@
 <?php
-Class Thread_Tag implements \JsonSerializable {
+Class ThreadTag implements \JsonSerializable {
 
 private int $thread_id;
 private int $tag_id;

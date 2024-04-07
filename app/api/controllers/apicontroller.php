@@ -24,6 +24,11 @@ class ApiController{
     protected function sanitizeInput($input) {
         return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
     }
+    protected function quickJsonTest($data)
+    {
+        echo json_encode(array("status" => "test", "data" => $data));
+        
+    }
 
     // Isset function for multiple variables
     

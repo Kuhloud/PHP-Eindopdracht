@@ -34,11 +34,11 @@ class PatternRouter
         if (!isset($explodedUri[0]) || empty($explodedUri[0])) {
             $explodedUri[0] = $defaultcontroller;
         }
-        if (!empty($explodedUri[2])) {
-            $explodedUri[0] = $explodedUri[2];
-        }
         if (!isset($explodedUri[1]) || empty($explodedUri[1]) || isset($explodedUri[2])) {
             $explodedUri[1] = $defaultmethod;
+        }
+        if (!empty($explodedUri[2])) {
+            $explodedUri[0] = "thread";
         }
         $controllerName = $explodedUri[0] . "controller";
         $methodName = $explodedUri[1];
@@ -65,11 +65,14 @@ class PatternRouter
             $_SESSION['board_id'] = $explodedUri[1]; 
             $methodName = 'board'; 
         }
-        // // for thread.php
-        // if ($controllerName == 'boardcontroller' && $methodName != 'index' && isset($explodedUri[2]) != 'thread') {
-        //     $_SESSION['thread_id'] = $explodedUri[2]; 
-        //     $methodName = 'board'; 
-        // }
+        // for thread.php
+        if ($controllerName == 'threadcontroller' && $api == false) {
+            $methodName = $defaultmethod;
+            $_SESSION['thread_id'] = $explodedUri[2]; 
+        }
+        else if ($controllerName == 'threadcontroller' && isset($explodedUrl[3]) && $api == false) {
+            $methodName = 'createthread';
+        }
         $controllerObj->{$methodName}();
     }
 }

@@ -1,15 +1,15 @@
 <?php
 require __DIR__ . '/apicontroller.php';
-require __DIR__ . '/../../services/thread_tagservice.php';
+require __DIR__ . '/../../services/threadtagservice.php';
 
-class Thread_TagController extends ApiController
+class ThreadTagController extends ApiController
 {
     private $threadTagService;
 
     // initialize services
     function __construct()
     {
-        $this->threadTagService = new Thread_TagService();
+        $this->threadTagService = new ThreadTagService();
     }
 
     public function index()
@@ -23,40 +23,49 @@ class Thread_TagController extends ApiController
                 $this->checkRequiredFields($threadTags);
                 return;
             }
+            //$this->quickJsonTest($threadTags);
+            //$threadTags = $this->databaseTest($threadTags->thread_id, $threadTags->tags);
             $this->handleAddTagsRequest($threadTags->thread_id, $threadTags->tags);
         }
     
-        // if ($this->getRequest() && isset($_GET['thread_id'])) {
-        //     $this->getTags($_GET['thread_id']);
-        // }
+        if ($this->getRequest() && isset($_GET['thread_id'])) {
+            $this->getTags($_GET['thread_id']);
+        }
     }
-    private function handleAddTagsRequest(int $thread_id, array $thread_tags)
+    private function handleAddTagsRequest(int $thread_id, array $tags)
     {
         try {
-            $tags = $this->addThreadTags($thread_id, $thread_tags);
-            echo json_encode(["status" => "success", "thread_id" => $thread_id, "tags" => $tags], JSON_THROW_ON_ERROR);
+            $threadTags = $this->addThreadTags($thread_id, $tags);
+            echo json_encode(["status" => "success", "thread_id" => $thread_id, "thread_tags" => $threadTags], JSON_THROW_ON_ERROR);
         } catch (Exception $e) {
             echo json_encode(["status" => "error", "message" => $e->getMessage()], JSON_THROW_ON_ERROR);
         }
     }
     private function addThreadTags(int $thread_id, array $tags)
     {
-        $thread_tags = [];
+        $threadTags = [];
         foreach ($tags as $tag) {
-            $thread_tag = new Thread_Tag();
-            $thread_tag->setThreadId($thread_id);
-            $thread_tag->setTagId($tag->getTagId());
-            $this->threadTagService->addTagToThread($thread_tag);
-            $thread_tags[] = $thread_tag;
+            $threadTag = new ThreadTag();
+            $threadTag->setThreadId($thread_id);
+            $threadTag->setTagId($tag->tag_id);
+            $this->threadTagService->addTagToThread($threadTag);
+            $threadTags[] = $threadTag;
         }
-        return $thread_tags;
+        if (empty($threadTags)) {
+            return;
+        }
+        return $threadTags;
     }
     
-    function getTags(int $thread_id)
+    private function getTags(int $thread_id)
     {
         try 
         {
             $tags = $this->threadTagService->getTagsByThreadId($thread_id);
+            if (empty($tags)) {
+                echo json_encode([]);
+                return;
+            }
             header("Content-type: application/json");
             echo json_encode($tags);
         } 

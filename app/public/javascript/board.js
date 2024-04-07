@@ -1,49 +1,79 @@
-async function loadThreads()
-{
-    const threads = getThreads();
-    threads.forEach(thread => {
-        const tags = getTags(thread.id);
-        const a = document.createElement('a');
-        a.setAttribute('href', `${window.location.href}/${thread.id}`);
-        a.classList.add('clickable-card');
-        a.id = 'thread';
+document.addEventListener('DOMContentLoaded', () => {
+    const url = window.location.href;
+    const segments = url.split('/');
+    const board_id = segments[segments.length - 1];
+    loadThreads(board_id);
+});
+async function loadThreads(board_id) {
+    try {
+        const threads = await getThreads(board_id);
+        threads.sort((a, b) => Date.parse(a.created_at) - Date.parse(b.created_at));
+        await Promise.all(threads.map(async thread => {
+                const tags = await getTags(thread.thread_id);
+                const username = await getUser(thread.user_id);
+                const a = document.createElement('a');
+                a.setAttribute('href', `${window.location.href}/${thread.thread_id}`);
+                a.classList.add('clickable-card');
+                a.id = 'thread';
+    
+                const section = document.createElement('section');
+                section.classList.add('card');
+    
+                const article = document.createElement('article');
+                article.classList.add('card-body', 'd-flex', 'flex-column');
+    
+                const threadTitle = document.createElement('h4');
+                threadTitle.classList.add('card-title');
+                threadTitle.innerText = thread.title;
+    
+                const threadDescription = document.createElement('p');
+                threadDescription.classList.add('card-text');
+                threadDescription.innerText = thread.first_post;
+    
+                const numberOfPosts = document.createElement('small');
+                numberOfPosts.classList.add('card-subtitle', 'mb-2', 'text-muted');
+                numberOfPosts.innerText = `Number of Posts: ${thread.post_count}` ;
 
-        const section = document.createElement('section');
-        section.classList.add('card');
+                const dateOfCreation = document.createElement('small');
+                dateOfCreation.classList.add('card-subtitle', 'mb-2', 'text-muted');
+                dateOfCreation.innerText = `Created at: ${thread.created_at}` ;
+    
+                const user = document.createElement('small');
+                user.classList.add('card-subtitle', 'mb-2', 'text-muted');
+                user.innerText = username;
 
-        const article = document.createElement('article');
-        article.classList.add('card-body');
+                article.appendChild(threadTitle);
+                article.appendChild(threadDescription);
+                article.appendChild(numberOfPosts);
+                article.appendChild(dateOfCreation);
+                article.appendChild(user);
 
-        const h4 = document.createElement('h4');
-        h4.classList.add('card-title');
-        h4.innerText = thread.title;
+                if (Array.isArray(tags)) {
+                    const tagList = document.createElement('article');
+                    tagList.classList.add('card-body', 'd-flex');
+                    article.appendChild(tagList);
+                    tags.forEach(tagName => {
+                        const span = document.createElement('span');
+                        span.classList.add('badge', 'rounded-pill', 'd-inline');
+                        span.style.display = 'inline';
+                        span.style.backgroundColor = "#E30380";
+                        span.innerText = tagName;
+                        tagList.appendChild(span);
+                    });
+                }
 
-        const p = document.createElement('p');
-        p.classList.add('card-text');
-        p.innerText = thread.first_post;
-
-        const small = document.createElement('small');
-        small.classList.add('card-subtitle', 'mb-2', 'text-muted');
-        small.innerText = thread.post_count;
-
-        article.appendChild(h4);
-        article.appendChild(p);
-        article.appendChild(small);
-        section.appendChild(article);
-        a.appendChild(section);
-
-        tags.forEach(tag => 
-            {
-                const span = document.createElement('span');
-                span.classList.add('badge', 'badge-secondary', 'mr-1');
-                span.innerText = tag.tag_name;
-                article.appendChild(span);
-            });
-    });
+                section.appendChild(article);
+                a.appendChild(section);
+    
+                document.getElementById('threads').appendChild(a);
+        }));
+    } catch (error) {
+        console.error('An error occurred:', error.message, 'Stack:', error.stack);
+    }
 }
-async function getThreads()
+async function getThreads(board_id)
 {
-    const res = await fetch('http://localhost/api/thread/threads' , 
+    const res = await fetch(`http://localhost/api/thread/threads?board_id=${board_id}` , 
     {
         method: 'GET',
         headers: {
@@ -53,14 +83,28 @@ async function getThreads()
     if (!res.ok) {
         throw new Error('Failed to retrieve threads.');
     }
-
     const threads = await res.json();
     return threads;
+}
+async function getUser(user_id)
+{
+    const res = await fetch(`http://localhost/api/user/username?user_id=${user_id}` , 
+    {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    if (!res.ok) {
+        throw new Error('Failed to retrieve user.');
+    }
+    const username = await res.json();
+    return username;
 }
 async function getTags(thread_id)
 {
     
-    const res = await fetch(`http://localhost/api/tag?thread_id=${thread_id}`, 
+    const res = await fetch(`http://localhost/api/threadtag?thread_id=${thread_id}`, 
     {
         method: 'GET',
         headers: {
@@ -70,6 +114,7 @@ async function getTags(thread_id)
     if (!res.ok) {
         throw new Error('Failed to retrieve threads.');
     }
+    console.log(`http://localhost/api/threadtag?thread_id=${thread_id}`);
     const tags = await res.json();
     return tags;
 }

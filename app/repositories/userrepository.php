@@ -21,6 +21,17 @@ class UserRepository extends Repository
                 echo $e;
             }
         }
+        function getUsername($userId)
+        {
+                $stmt = $this->connection->prepare("SELECT username FROM users WHERE user_id = :user_id");
+                $stmt->bindParam(':user_id', $userId);
+                $stmt->execute();
+
+                $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
+                $username = $stmt->fetch();
+
+                return $username;
+        }
         function insert($user)
         {
                 $stmt = $this->connection->prepare("INSERT into users (username, email, password, joined_at) 
