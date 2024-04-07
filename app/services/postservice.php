@@ -6,6 +6,6 @@ class PostService {
     public function insert($post) {
         // retrieve data
         $repository = new PostRepository();
-        $repository->insert($post);        
+        return $repository->insert($post->getThreadId(), $post->getUserId(), $post->getMessage());        
     }
 }

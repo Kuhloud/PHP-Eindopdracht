@@ -16,11 +16,8 @@ class ThreadController extends Controller {
     public function index() {
         
         $currentboard = $_SESSION['currentboard'];
+        $boardId = $_SESSION['board_id'];
         $userId = $_SESSION['user'];
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     // $threadTitle = htmlspecialchars($_POST['ThreadTitle']);
-        //     // $threadTags = htmlspecialchars($_POST['ThreadTags']);
-        // }
       
         // Retrieve the previous URL
         require __DIR__ . "/../views/thread/index.php";

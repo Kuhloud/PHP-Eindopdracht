@@ -43,7 +43,7 @@ async function loadThreads()
 }
 async function getThreads()
 {
-    const res = await fetch('/api/thread/threads' , 
+    const res = await fetch('http://localhost/api/thread/threads' , 
     {
         method: 'GET',
         headers: {
@@ -60,7 +60,7 @@ async function getThreads()
 async function getTags(thread_id)
 {
     
-    const res = await fetch(`/api/tag?thread_id=${thread_id}`, 
+    const res = await fetch(`http://localhost/api/tag?thread_id=${thread_id}`, 
     {
         method: 'GET',
         headers: {

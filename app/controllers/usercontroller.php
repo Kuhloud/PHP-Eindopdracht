@@ -14,8 +14,8 @@ class UserController extends Controller {
     // router maps this to /article and /article/index automatically
     public function signin() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = htmlspecialchars($_POST['inputUsername']);
-            $email = htmlspecialchars($_POST['inputEmail']);
+            $username = $this->sanitizeInput($_POST['inputUsername']);
+            $email = $this->sanitizeInput($_POST['inputEmail']);
             $password = $_POST['inputPassword'];
             $errorMessage = $this->checkForErrors($username, $email, $password);
             if (empty($errorMessage)) {
@@ -30,7 +30,7 @@ class UserController extends Controller {
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $input = htmlspecialchars($_POST['UserInput']);
+            $input = $this->sanitizeInput($_POST['UserInput']);
             $password = $_POST['UserPassword'];
             $errorMessage = $this->checkValidUser($input, $password);
             if (empty($errorMessage)) {

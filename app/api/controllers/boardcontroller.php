@@ -1,7 +1,8 @@
 <?php
+require __DIR__ . '/apicontroller.php';
 require __DIR__ . '/../services/threadservice.php';
 
-class BoardController
+class BoardController extends ApiController
 {
     private $threadService;
 
@@ -14,7 +15,7 @@ class BoardController
     {
         $boardId = $_SESSION['board_id'];
 
-        $threads = $this->threadService->getThreads($board->getId());
+        $threads = $this->threadService->getThreadsByBoardId($board->getId());
         $this->displayView($threads);
 
         require __DIR__ . "/../views/board/board.php";

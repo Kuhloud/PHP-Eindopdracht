@@ -1,6 +1,8 @@
 <?php
+require __DIR__ . '/apicontroller.php';
+require __DIR__ . '/../../services/threadservice.php';
 
-class ThreadController
+class ThreadController extends ApiController
 {
     private $threadService;
 
@@ -12,36 +14,74 @@ class ThreadController
 
     public function index()
     {
-        $currentboard = $_SESSION['currentboard'];
-        // Respond to a POST request to /api/thread
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            // read JSON from the request, convert it to an article object
-            // and have the service insert the article into the database
-            $json = file_get_contents('php://input');
-            $newThread = json_decode($json);
+    header("Content-type: application/json");
+    // Respond to a POST request to /api/thread
+    if ($this->postRequest()) {
+                // read JSON from the request, convert it to an article object
+        // and have the service insert the article into the database
+        $newThread = $this->getJsonData();
 
-            $title = htmlspecialchars($newThread->title, ENT_QUOTES, 'UTF-8');
-            $firstPost = htmlspecialchars($newThread->firstPost, ENT_QUOTES, 'UTF-8');
+        if (!isset($newThread->board_id, $newThread->user_id, $newThread->title, $newThread->first_post)) {
+            $this->checkRequiredFields($newThread);
+            return;
+        }
 
-            $thread = new Thread();
-            $thread->setBoardId($currentboard->getBoardId());
-            $thread->setTitle($title);
-            $thread->setFirstPost($firstPost);
-            $thread->setUserId($_SESSION['user']);
+        $title = $this->sanitizeInput($newThread->title);
+        $firstPost = $this->sanitizeInput($newThread->first_post);
 
-            $this->threadService->insert($thread);
-            header("Location: ../");
+        $thread = new Thread();
+        $thread->setBoardId($newThread->board_id);
+        $thread->setTitle($title);
+        $thread->setFirstPost($firstPost);
+        $thread->setUserId($newThread->user_id);
+        try 
+        {
+            $thread->setThreadId($this->threadService->insert($thread));
+            echo json_encode(["status" => "success", "thread" => $thread]);
+        } catch (Exception $e) {
+            echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+        }
+    }
+    }
+    function getThreadsByBoardId($boardId)
+    {
+        $threads = $this->threadService->getThreadsByBoardId($boardId);
+        header("Content-type: application/json");
+        echo json_encode($threads);
+    }
+    private function checkRequiredFields($newThread)
+    {
+        $requiredFields = ['board_id', 'user_id', 'title', 'first_post'];
+        $missingFields = [];
+
+        foreach ($requiredFields as $field) {
+            if (!isset($newThread->$field)) {
+                $missingFields[] = $field;
+            }
+        }
+
+        if (!empty($missingFields)) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Missing required fields",
+                "missing_fields" => $missingFields
+            ]);
         }
     }
     public function threads()
     {
-        if ($_SERVER["REQUEST_METHOD"] == "GET") {
-            
+        if (!$this->getRequest()) {
+            return;
+        }
+        try 
+        {
             // return the thread as JSON
-            $thread = $this->threadService->getThreads($_SESSION['board']->getId());
+            $thread = $this->threadService->getAllThreads();
             header("Content-type: application/json");
             echo json_encode($thread);
+        } catch (Exception $e) {
+            echo json_encode(['error' => $e->getMessage()]);
         }
     }
 }

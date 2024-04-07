@@ -7,11 +7,14 @@ private int $user_id;
 private string $title;
 private string $first_post;
 private int $post_count;
-private DateTime $created_at;
+private string $created_at;
 
 public function jsonSerialize() : mixed {
     $vars = get_object_vars($this);
     return $vars;
+}
+public function setThreadId(int $thread_id) {
+    $this->thread_id = $thread_id;
 }
 public function getThreadId() {
     return $this->thread_id;
@@ -23,7 +26,11 @@ public function getBoardId() {
     return $this->board_id;
 }
 public function setUserId(int $user_id) {
-    $this->$user_id = $user_id;
+    $this->user_id = $user_id;
+}
+public function getUserId()
+{
+    return $this->user_id;
 }
 public function setTitle(string $title) {
     $this->title = $title;

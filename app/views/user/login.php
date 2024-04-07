@@ -6,7 +6,7 @@
         <?php if(isset($errorMessage) && !empty($errorMessage)): ?>
             <p class="alert alert-danger" role="alert">
                 <?php echo htmlspecialchars($errorMessage); ?>
-        </p>
+            </p>
         <?php endif; ?>
         <label for="username" class="sr-only">Enter Username/Email address</label>
         <input type="username" name="UserInput" id="username" class="form-control" placeholder="Enter Username/Email address">

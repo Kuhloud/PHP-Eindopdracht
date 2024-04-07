@@ -7,7 +7,7 @@
             Post a New Thread - <?= $currentboard ?>
         </header>
         <section class="card-body">
-            <form>
+            <form id="createThread" onsubmit="event.preventDefault()">
                 <section class="mb-3">
                     <label for="threadTitle" class="form-label">Thread Title:</label>
                     <input type="text" class="form-control" id="threadTitle" placeholder="Enter thread title">
@@ -20,7 +20,7 @@
                     <label for="tags" class="form-label">Tags:</label>
                     <input type="text" class="form-control" id="tags" placeholder="Enter tags (separated by commas)">
                 </section>
-                <button type="submit" onclick="createThread(<?= $userId ?>)" class="btn btn-primary">Create Thread</button>
+                <button type="submit" onclick="createThread(<?= $userId ?>, <?= $boardId ?>)" class="btn btn-primary">Create Thread</button>
             </form>
         </section>
     </article>

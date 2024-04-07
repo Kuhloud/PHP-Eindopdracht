@@ -1,6 +1,8 @@
 <?php
+require __DIR__ . '/apicontroller.php';
+require __DIR__ . '/../../services/tagservice.php';
 
-class TagController
+class TagController extends ApiController
 {
     private $tagService;
 
@@ -12,39 +14,69 @@ class TagController
 
     public function index()
     {
-        // Respond to a POST request to /api/thread
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        header("Content-type: application/json");
+    
+        if ($this->postRequest()) {
+            $newThread = $this->getJsonData();
 
-            // read JSON from the request, convert it to an article object
-            // and have the service insert the article into the database
-            $json = file_get_contents('php://input');
-            $newThread = json_decode($json);
-
-            $tags = explode(",", $newThread->tags);
-
-            if (!empty($tags))
-            {
-                $this->addTags($tags, $newThread->thread_id);
+            if (!isset($newThread->thread_id,$newThread->addedTags)) {
+                $this->checkRequiredFields($newThread);
+                return;
             }
-            header("Location: ../");
+            else {
+                $addedTags = explode(",", $newThread->addedTags);
+                if (!empty($addedTags)) 
+                {
+                    return;
+                }
+                $this->handleAddTagsRequest($newThread->thread_id, $addedTags);
+            }
         }
-        if ($_SERVER["REQUEST_METHOD"] == "GET") {
-            $thread_id = $_GET['thread_id'];
-            $this->getTags($thread_id);
+    
+        // if ($this->getRequest() && isset($_GET['thread_id'])) {
+        //     $this->getTags($_GET['thread_id']);
+        // }
+    }
+    private function handleAddTagsRequest(int $thread_id, array $addedTags)
+    {
+        try {
+            $tags = $this->addTags($addedTags);
+            echo json_encode(["status" => "success", "thread_id" => $thread_id, "tags" => $tags], JSON_THROW_ON_ERROR);
+        } catch (Exception $e) {
+            echo json_encode(["status" => "error", "message" => $e->getMessage()], JSON_THROW_ON_ERROR);
         }
     }
-    function addTags($tags, $thread_id)
+    private function addTags(array $tags)
     {
+        $new_tags = [];
         foreach ($tags as $tagName) {
             $tag = new Tag();
-            $tag->setTagName(htmlspecialchars($tagName, ENT_QUOTES, 'UTF-8'));
-            $this->tagService->addTagsToThread($thread_id, $tag);
+            $tag->setTagName($this->sanitizeInput($tagName));
+            $tag->setTagId($this->tagService->insert($tag));
+            $new_tags[] = $tag;
         }
+        return $new_tags;
     }
-    function getTags($thread_id)
+    
+    private function checkRequiredFields(string $newThread)
     {
-        $tags = $this->tagService->getTagsByThreadId($thread_id);
-        header("Content-type: application/json");
-        echo json_encode($tags);
+        $requiredFields = ['thread_id, addedTags'];
+        $missingFields = [];
+
+        foreach ($requiredFields as $field) {
+            if (!isset($newThread->$field)) 
+            {
+                $missingFields[] = $field;
+            }
+        }
+
+        if (!empty($missingFields)) {
+            echo json_encode([
+            "status" => "error", 
+            "message" => "Missing required fields", 
+            "missing_fields" => $missingFields
+            ], JSON_THROW_ON_ERROR);
+        return;
+        }
     }
 }

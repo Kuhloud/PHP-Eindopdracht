@@ -1,86 +1,153 @@
-function createThread(user_id) {
+function createThread(user_id, board_id) {
     alert('createThread() called');
 
-    // Create an object with the data from the form (title and first_post)
-    let formData = {
+    const formData = {
         title: document.getElementById('threadTitle').value,
-        firstPost: document.getElementById('firstPost').value,
+        first_post: document.getElementById('firstPost').value,
         tags: document.getElementById('tags').value
     };
-
-    // Create new thread / Post the data to http://localhost/api/thread using fetch
-    fetch('http://localhost/api/thread',
+    if (formData.title == '' || formData.first_post == '') {
+        displayError('Title and first post are required');
+        return;
+    }
+    createNewThread(board_id, formData.title, formData.first_post, user_id)
+    .then((threadData) => {
+        if (!threadData || !threadData.thread) {
+            console.error('Thread not found:', threadData);
+            return;
+        }
+        createFirstPost(threadData.thread.thread_id, threadData.thread.first_post, threadData.thread.user_id);
+        if (formData.tags && formData.tags != '') 
         {
+            return addTags(threadData.thread.thread_id, formData.tags);
+        }
+    })
+    .then((tagData) => {
+        if (!tagData || !tagData.thread_id || !tagData.tags) {
+            console.error('Tags not found:', tagData);
+            return;
+        }
+        return addThreadTags(tagData.thread_id, tagData.tags);
+    })
+    .then(() => 
+    {
+       // window.location.href = `http://localhost/board/${board_id}`;
+    })
+    .catch(error => {
+        console.error('Error:', error.message, 'Stack:', error.stack);
+    });
+}
+async function createNewThread(board_id, title, first_post, user_id) 
+{
+    try
+    {
+        const response = await fetch('http://localhost/api/thread', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify(
-                {
-                    title: formData.title,
-                    firstPost: formData.firstPost,
-                    user_id: user_id
-                }
-            )
-        })
-        .then(response => { response.json() })
-        .then(data => {
-            console.log('Success:', data);
-            addTags(data.thread_id, formData.tags);
-            createFirstPost(data.thread_id, data.first_post, user_id);
-        })
-        .catch(error => {
-            console.error('Error message:', error.message);
-            console.error('Error object:', error);
-        });
-}
-function addTags(thread_id, tags) 
-{
-            // Action 2: Turn first post into a post object
-            fetch('http://localhost/api/tag', 
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(
-                    {
-                        thread_id: thread_id,
-                        tags: tags,
-                    }
-                )
-            })        
-            .then(response => { response.json() })
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch(error => {
-                console.error('Error message:', error.message);
-                console.error('Error object:', error);
-            });
-}
-function createFirstPost(thread_id, first_post, user_id) 
-{
-    fetch('http://localhost/api/post', 
-    {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(
-            {
-                thread_id: thread_id,
-                message: first_post,
+            body: JSON.stringify({
+                board_id: board_id,
+                title: title,
+                first_post: first_post,
                 user_id: user_id
-            }
-        )
-    })
-    .then(response => { response.json() })
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch(error => {
-        console.error('Error message:', error.message);
-        console.error('Error object:', error);
-    });
+            })
+        })
+        if (!response.ok) {
+            const error = await response.text();
+            console.log(error);
+            throw new Error('Failed to create thread');
+        }
+        const data = await response.json();
+        console.log('Thread created:', data);
+        return data;
+
+    }
+    catch (error) {
+        console.error('An error occurred:', error.message, 'Stack:', error.stack);
+    }
+}
+async function createFirstPost(thread_id, first_post, user_id) {
+
+    try{
+        const response = await fetch('http://localhost/api/post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                thread_id: thread_id,
+                first_post: first_post,
+                user_id: user_id
+            })
+        });
+        if (!response.ok) {
+            const error = await response.text();
+            console.log(error);
+            throw new Error('Failed to create first post');
+        }
+        const data = await response.json();
+        console.log('First Post:', data);
+
+    }
+    catch (error) {
+        console.error('An error occurred:', error.message, 'Stack:', error.stack);
+    }
+}
+async function addTags(thread_id, addedTags) {
+    try {
+        const response = await fetch('http://localhost/api/tag', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                thread_id: thread_id,
+                addedTags: addedTags
+            })
+        });
+        if (!response.ok) {
+            const error = await response.text();
+            console.log(error);
+            throw new Error('Failed to add tags');
+        }
+        const tags = await response.json();
+        console.log('New tags added:', tags);
+        return tags;
+
+    } catch (error) {
+        console.error('An error occurred:', error.message, 'Stack:', error.stack);
+    }
+}
+async function addThreadTags(thread_id, tags) {
+    try {
+        const response = await fetch('http://localhost/api/thread_tag', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                thread_id: thread_id,
+                tags: tags
+            })
+        });
+        if (!response.ok) {
+            const error = await response.text();
+            console.log(error);
+            throw new Error('Failed to add thread tags');
+        }
+        const threadTags = await response.json();
+        console.log('Tags added to thread:', threadTags);
+        
+    } catch (error) {
+        console.error('An error occurred:', error.message, 'Stack:', error.stack);
+    }
+}
+
+function displayError(error) {
+    const form = document.getElementById('createThread');
+    const errorDisplay = document.createElement('p');
+    errorDisplay.classList.add('alert', 'alert-danger');
+    errorDisplay.innerText = error;
+    form.appendChild(errorDisplay);
 }

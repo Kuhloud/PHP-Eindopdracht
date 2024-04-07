@@ -4,29 +4,14 @@ require __DIR__ . '/../models/post.php';
 
 class PostRepository extends Repository
 {
-    function getTagByName($tag_name)
+    function insert($thread_id, $user_id, $message)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM tags WHERE tag_name = :tag_name");
-        $stmt->bindParam(':tag_name', $tag_name);
-        $stmt->execute();
+            $stmt = $this->connection->prepare("INSERT into posts (thread_id, user_id, message, posted_at) VALUES (:thread_id, :user_id, :message , NOW())");
+            $stmt->bindParam(':thread_id', $thread_id);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':message', $message);
+            $stmt->execute();
 
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Tag');
-        $tag = $stmt->fetch();
-        return $tag;
-    }
-    function connectTagsToThread($threadid, $tag)
-    {
-            $stmt = $this->connection->prepare("INSERT into thread_tags (thread_id, tag_id) VALUES (:thread_id, :tag_id)");
-            $stmt->bindParam(':thread_id', $threadid);
-            $stmt->bindParam(':tag_id', $tag->getTagId());
-            $stmt->execute();
-    }
-    function insert($post)
-    {
-            $stmt = $this->connection->prepare("INSERT into post (thread_id, user_id, message) VALUES (:thread_id, :user_id, :message)");
-            $stmt->bindParam(':thread_id', $post->getThreadId());
-            $stmt->bindParam(':user_id', $post->getUserId());
-            $stmt->bindParam(':message', $post->getMessage());
-            $stmt->execute();
+            return $this->connection->lastInsertId();
     }
     }

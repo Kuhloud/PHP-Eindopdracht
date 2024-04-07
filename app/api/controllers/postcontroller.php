@@ -1,6 +1,8 @@
 <?php
+require __DIR__ . '/apicontroller.php';
+require __DIR__ . '/../../services/postservice.php';
 
-class PostController
+class PostController extends ApiController
 {
     private $postService;
 
@@ -12,24 +14,51 @@ class PostController
 
     public function index()
     {
+        header("Content-type: application/json");
 
-        // Respond to a POST request to /api/post
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (!$this->postRequest()) {
+            return;
+        }
+        $firstPost = $this->getJsonData();
+    
+        if (!isset($firstPost->thread_id, $firstPost->user_id, $firstPost->first_post)) {
+            $this->checkRequiredFields($firstPost);
+            return;
+        }
+    
+        $resanitizedMessage = $this->sanitizeInput($firstPost->first_post);
+    
+        $post = new Post();
+        $post->setThreadId($firstPost->thread_id);
+        $post->setUserId($firstPost->user_id);
+        $post->setMessage($resanitizedMessage);
+    
+        try {
+            $post->setPostId($this->postService->insert($post));
+            echo json_encode(["status" => "success", "post" => $post], JSON_THROW_ON_ERROR);
+        } catch (Exception $e) {
+            echo json_encode(["status" => "error", "message" => $e->getMessage()], JSON_THROW_ON_ERROR);
+        }
+    }
+    private function checkRequiredFields($firstPost)
+    {
+        $requiredFields = ['thread_id', 'user_id', 'first_post'];
+        $missingFields = [];
 
-            // read JSON from the request, convert it to an article firstPost
-            // and have the service insert the article into the database
-            $json = file_get_contents('php://input');
-            $firstPost = json_decode($json);
+        foreach ($requiredFields as $field) {
+            if (!isset($firstPost->$field)) 
+            {
+                $missingFields[] = $field;
+            }
+        }
 
-            $resanitizedMessage = htmlspecialchars($firstPost->message, ENT_QUOTES, 'UTF-8');
-
-
-            $post = new Post();
-            $post->setThreadId($firstPost->thread_id);
-            $post->setUserId($firstPost->userId);
-            $post->setMessage($resanitizedMessage);
-
-            $this->postService->insert($post);
+        if (!empty($missingFields)) {
+            echo json_encode([
+            "status" => "error", 
+            "message" => "Missing required fields", 
+            "missing_fields" => $missingFields
+            ], JSON_THROW_ON_ERROR);
+        return;
         }
     }
 }
