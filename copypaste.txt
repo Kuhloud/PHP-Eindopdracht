@@ -176,3 +176,87 @@ function createFirstPost(thread_id, first_post, user_id)
     });
 }
 </script>
+async function processTags(url, thread_id, tags) {
+    try {
+        const response = await fetch(`http://localhost/api/${url}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                {
+                    thread_id: thread_id,
+                    tags: tags
+                }
+            )
+        });
+        if (!response.ok) {
+            const error = await response.text();
+            console.log(error);
+            throw new Error(`Failed to post data to ${url}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('An error occurred:', error.message, 'Stack:', error.stack);
+    }
+}
+
+async function addTags(thread_id, tags) {
+    const tagData = await postData('http://localhost/api/tag', { thread_id, tags });
+    console.log('New tags added:', tagData);
+    return tagData;
+}
+
+async function addThreadTags(thread_id, tags) {
+    const threadTags = await postData('http://localhost/api/thread_tag', { thread_id, tags });
+    console.log('Tags added to thread:', threadTags);
+}
+async function addTags(thread_id, tags) {
+    try {
+        const response = await fetch('http://localhost/api/tag', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                thread_id: thread_id,
+                tags: tags
+            })
+        });
+        if (!response.ok) {
+            const error = await response.text();
+            console.log(error);
+            throw new Error('Failed to add tags');
+        }
+        const tagData = await response.json();
+        console.log('New tags added:', tagData);
+        return tagData;
+
+    } catch (error) {
+        console.error('An error occurred:', error.message, 'Stack:', error.stack);
+    }
+}
+async function addThreadTags(thread_id, thread_tags) {
+    try {
+        const response = await fetch('http://localhost/api/thread_tag', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                thread_id: thread_id,
+                thread_tags: thread_tags
+            })
+        });
+        if (!response.ok) {
+            const error = await response.text();
+            console.log(error);
+            throw new Error('Failed to add thread tags');
+        }
+        const threadTagData = await response.json();
+        console.log('Tags added to thread:', threadTagData);
+        
+    } catch (error) {
+        console.error('An error occurred:', error.message, 'Stack:', error.stack);
+    }
+}

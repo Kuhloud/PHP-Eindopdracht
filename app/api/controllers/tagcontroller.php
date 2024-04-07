@@ -19,18 +19,11 @@ class TagController extends ApiController
         if ($this->postRequest()) {
             $newThread = $this->getJsonData();
 
-            if (!isset($newThread->thread_id,$newThread->addedTags)) {
+            if (!isset($newThread->thread_id, $newThread->tags)) {
                 $this->checkRequiredFields($newThread);
                 return;
             }
-            else {
-                $addedTags = explode(",", $newThread->addedTags);
-                if (!empty($addedTags)) 
-                {
-                    return;
-                }
-                $this->handleAddTagsRequest($newThread->thread_id, $addedTags);
-            }
+            $this->handleAddTagsRequest($newThread->thread_id, $newThread->tags);
         }
     
         // if ($this->getRequest() && isset($_GET['thread_id'])) {
@@ -60,7 +53,7 @@ class TagController extends ApiController
     
     private function checkRequiredFields(string $newThread)
     {
-        $requiredFields = ['thread_id, addedTags'];
+        $requiredFields = ['thread_id, tags'];
         $missingFields = [];
 
         foreach ($requiredFields as $field) {

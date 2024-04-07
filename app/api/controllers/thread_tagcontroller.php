@@ -20,21 +20,21 @@ class Thread_TagController extends ApiController
             $threadTags = $this->getJsonData();
 
             if (!isset($threadTags->thread_id, $threadTags->tags)) {
-                $this->checkRequiredFields($threadTags->thread_id);
+                $this->checkRequiredFields($threadTags);
                 return;
             }
-                $this->handleAddTagsRequest($threadTags->thread_id, $threadTags->tags);
+            $this->handleAddTagsRequest($threadTags->thread_id, $threadTags->tags);
         }
     
         // if ($this->getRequest() && isset($_GET['thread_id'])) {
         //     $this->getTags($_GET['thread_id']);
         // }
     }
-    private function handleAddTagsRequest(int $thread_id, array $tags)
+    private function handleAddTagsRequest(int $thread_id, array $thread_tags)
     {
         try {
-            $thread_tags = $this->addThreadTags($thread_id, $tags);
-            echo json_encode(["status" => "success", "thread_id" => $thread_id, "thread_tags" => $thread_tags], JSON_THROW_ON_ERROR);
+            $tags = $this->addThreadTags($thread_id, $thread_tags);
+            echo json_encode(["status" => "success", "thread_id" => $thread_id, "tags" => $tags], JSON_THROW_ON_ERROR);
         } catch (Exception $e) {
             echo json_encode(["status" => "error", "message" => $e->getMessage()], JSON_THROW_ON_ERROR);
         }

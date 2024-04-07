@@ -5,4 +5,8 @@ class HomeController extends Controller {
     public function index() {
         require __DIR__ . '/../views/home/index.php';
     }
+    public function test()
+    {
+        require __DIR__ . '/../views/home/test.php';
+    }
 }
