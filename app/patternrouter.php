@@ -67,11 +67,12 @@ class PatternRouter
         }
         // for thread.php
         if ($controllerName == 'threadcontroller' && $api == false) {
-            $methodName = $defaultmethod;
-            $_SESSION['thread_id'] = $explodedUri[2]; 
-        }
-        else if ($controllerName == 'threadcontroller' && isset($explodedUrl[3]) && $api == false) {
-            $methodName = 'createthread';
+            if (isset($explodedUri[3]) && $explodedUri[3] == 'createthread') {
+                $methodName = 'createthread';
+            } else {
+                $methodName = $defaultmethod;
+                $_SESSION['thread_id'] = $explodedUri[2]; 
+            }
         }
         $controllerObj->{$methodName}();
     }

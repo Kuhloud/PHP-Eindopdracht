@@ -1,29 +1,30 @@
 <?php
 require __DIR__ . '/controller.php';
-require __DIR__ . '/../services/threadservice.php';
+require __DIR__ . '/../services/postservice.php';
 
 
 class PostController extends Controller {
 
-    private $threadService; 
+    private $postService; 
 
     // initialize services
     function __construct() {
-        $this->threadService = new ThreadService();
+        $this->postService = new PostService();
     }
 
     // router maps this to /article and /article/index automatically
     public function index() {
-        
-        $currentboard = $_SESSION['currentboard'];
+        // $threadId = $_SESSION['thread_id'];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $postMessage = $this->sanitizeInput($_POST['postMessage']);
-            $threadId = $_SESSION['thread_id'];
-            $userId = $_SESSION['user'];
-        } 
-      
-        // Retrieve the previous URL
-        require __DIR__ . "/../views/thread/index.php";
+        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //     $postMessage = $this->sanitizeInput($_POST['postMessage']);
+        //     $userId = $_SESSION['user_id'];
+
+        //     $post = new Post();
+        //     $post->setThreadId($threadId);
+        //     $post->setUserId($userId);
+        //     $post->setMessage($postMessage);
+        //     $this->postService->insert($post);
+        // }
     }
 }

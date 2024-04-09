@@ -21,15 +21,7 @@ class UserService {
         $repository = new UserRepository();
 
         $hashedPassword = $this->hashPassword($plainPassword);
-        $user = $this->createUser($username, $email, $hashedPassword);
-        $repository->insert($user);       
-    }
-    function createUser($username, $email, $password) {
-        $user = new User();
-        $user->setUsername($username);
-        $user->setEmail($email);
-        $user->setPassword($password);
-        return $user;
+        $repository->insert($username, $email, $hashedPassword);       
     }
     public function getUser($userInput, $password)
     {

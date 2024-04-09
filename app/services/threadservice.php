@@ -25,7 +25,12 @@ class ThreadService {
         // retrieve data
         $repository = new ThreadRepository();
         $threadId = $repository->insert($thread->getBoardId(), $thread->getTitle(), $thread->getFirstPost(), $thread->getUserId());  
-        $repository->updatePostCount($threadId);   
+        $this->updatePostCount($threadId);   
         return $threadId;   
+    }
+    public function updatePostCount($threadId) {
+        // retrieve data
+        $repository = new ThreadRepository();
+        $repository->updatePostCount($threadId);
     }
 }

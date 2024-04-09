@@ -21,7 +21,16 @@ class ThreadController extends ApiController
                 // read JSON from the request, convert it to an article object
         // and have the service insert the article into the database
         $newThread = $this->getJsonData();
-
+        $this->createThread($newThread);
+        }
+    if ($this->putRequest() && isset($_GET['thread_id'])) {
+        $threadId = $_GET['thread_id'];
+        $this->threadService->updatePostCount($threadId);
+        echo json_encode(["status" => "success"]);
+    }
+    }
+    function createThread($newThread)
+    {
         if (!isset($newThread->board_id, $newThread->user_id, $newThread->title, $newThread->first_post)) {
             $this->checkRequiredFields($newThread);
             return;
@@ -35,14 +44,19 @@ class ThreadController extends ApiController
         $thread->setTitle($title);
         $thread->setFirstPost($firstPost);
         $thread->setUserId($newThread->user_id);
+        $thread->setThreadId($this->threadService->insert($thread));
+
+        return $thread;
+    }
+    private function handleThreadRequest($threadData)
+    {
         try 
         {
-            $thread->setThreadId($this->threadService->insert($thread));
+            $thread = $this->createThread($threadData);
             echo json_encode(["status" => "success", "thread" => $thread]);
         } catch (Exception $e) {
             echo json_encode(["status" => "error", "message" => $e->getMessage()]);
         }
-    }
     }
     function getThreadsByBoardId($boardId)
     {

@@ -47,11 +47,6 @@ class UserController extends Controller {
         session_destroy();
         header("Location: /");
     }
-    function currentUser($user)
-    {
-        $_SESSION['user'] = $user->getUserId();    
-        $_SESSION['username'] = $user->getUsername();
-    }
     function checkValidUser($input, $password) {
         if (empty($input)) {
             $errorMessage = "Username/Email address is required";

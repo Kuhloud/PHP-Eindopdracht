@@ -19,25 +19,43 @@ class PostController extends ApiController
         if (!$this->postRequest()) {
             return;
         }
-        $firstPost = $this->getJsonData();
-    
-        if (!isset($firstPost->thread_id, $firstPost->user_id, $firstPost->first_post)) {
-            $this->checkRequiredFields($firstPost);
-            return;
-        }
-    
-        $resanitizedMessage = $this->sanitizeInput($firstPost->first_post);
-    
-        $post = new Post();
-        $post->setThreadId($firstPost->thread_id);
-        $post->setUserId($firstPost->user_id);
-        $post->setMessage($resanitizedMessage);
-    
+        $postMessage = $this->getJsonData();
+        $this->handlePostRequest($postMessage);
+        //$this->quickJsonTest($postMessage->user_id);
+
+    }
+    private function handlePostRequest($postMessage)
+    {
         try {
-            $post->setPostId($this->postService->insert($post));
-            echo json_encode(["status" => "success", "post" => $post], JSON_THROW_ON_ERROR);
+            $post = $this->createPost($postMessage);
+            echo json_encode(["status" => "success", "thread_id" => $post->getThreadId(), "post" => $post], JSON_THROW_ON_ERROR);
         } catch (Exception $e) {
             echo json_encode(["status" => "error", "message" => $e->getMessage()], JSON_THROW_ON_ERROR);
+        }
+    }
+    private function createPost($postMessage)
+    {
+        if (!isset($postMessage->thread_id, $postMessage->post, $postMessage->user_id)) {
+            $this->checkRequiredFields($postMessage);
+            return;
+        }
+        $resanitizedMessage = $this->sanitizeInput($postMessage->post);
+    
+        $post = new Post();
+        $post->setThreadId($postMessage->thread_id);
+        $post->setUserId($postMessage->user_id);
+        $post->setMessage($resanitizedMessage);
+        $post->setPostId($this->postService->insert($post));
+
+        return $post;
+    }
+    public function thread()
+    {
+        header("Content-type: application/json");
+        if ($this->getRequest() && isset($_GET['thread_id'])) {
+            $threadId = $_GET['thread_id'];
+            $posts = $this->postService->getPostsByThreadId($threadId);
+            echo json_encode($posts);
         }
     }
     public function user($userId)

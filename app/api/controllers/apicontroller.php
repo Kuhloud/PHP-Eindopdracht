@@ -29,6 +29,14 @@ class ApiController{
         echo json_encode(array("status" => "test", "data" => $data));
         
     }
+    // private function handleResponse($data)
+    // {
+    //     try {
+    //         echo json_encode(["status" => "success", `data` => $data], JSON_THROW_ON_ERROR);
+    //     } catch (Exception $e) {
+    //         echo json_encode(["status" => "error", "message" => $e->getMessage()], JSON_THROW_ON_ERROR);
+    //     }
+    // }
 
     // Isset function for multiple variables
     

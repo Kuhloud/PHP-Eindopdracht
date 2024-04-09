@@ -84,6 +84,7 @@ async function getThreads(board_id)
         throw new Error('Failed to retrieve threads.');
     }
     const threads = await res.json();
+    console.log(`http://localhost/api/thread/threads?board_id=${board_id}`);
     return threads;
 }
 async function getUser(user_id)
@@ -114,7 +115,6 @@ async function getTags(thread_id)
     if (!res.ok) {
         throw new Error('Failed to retrieve threads.');
     }
-    console.log(`http://localhost/api/threadtag?thread_id=${thread_id}`);
     const tags = await res.json();
     return tags;
 }

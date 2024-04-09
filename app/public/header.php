@@ -30,10 +30,10 @@
                 </a>
             </li>
         <?php 
-        if (isset($_SESSION['username'])) 
+        if (isset($_SESSION['user_id'])) 
         : ?>
             <li class="nav-item">
-                <span class="nav-link">Welcome, <?= $_SESSION['username'] ?></span>
+                <span class="nav-link">Welcome, <?= $_SESSION['username'] ?><?= $_SESSION['user_id'] ?></span>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/user/logout">

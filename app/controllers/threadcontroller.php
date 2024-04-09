@@ -28,7 +28,7 @@ class ThreadController extends Controller {
         
         $currentboard = $_SESSION['currentboard'];
         $boardId = $_SESSION['board_id'];
-        $userId = $_SESSION['user'];
+        $userId = $_SESSION['user_id'];
       
         // Retrieve the previous URL
         require __DIR__ . "/../views/thread/createthread.php";

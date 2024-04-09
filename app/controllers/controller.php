@@ -6,6 +6,10 @@ class Controller {
         $view = debug_backtrace()[1]['function'];
         require __DIR__ . "/../views/$directory/$view.php";
     }
+    protected function currentUser($user) {
+        $_SESSION['user_id'] = $user->getUserId();
+        $_SESSION['username'] = $user->getUsername();
+    }
     protected function sanitizeInput($input) {
         return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
     }

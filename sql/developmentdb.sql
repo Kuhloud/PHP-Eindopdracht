@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Gegenereerd op: 07 apr 2024 om 17:22
+-- Gegenereerd op: 08 apr 2024 om 12:47
 -- Serverversie: 11.1.3-MariaDB-1:11.1.3+maria~ubu2204
 -- PHP-versie: 8.2.12
 
@@ -60,6 +60,15 @@ CREATE TABLE `posts` (
   `posted_at` datetime NOT NULL DEFAULT curdate()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `posts`
+--
+
+INSERT INTO `posts` (`post_id`, `thread_id`, `user_id`, `message`, `posted_at`) VALUES
+(1, 2, 1, 'Zesty', '2024-04-07 18:07:45'),
+(2, 3, 1, 'as', '2024-04-07 18:12:15'),
+(3, 4, 1, 'xcxc', '2024-04-07 21:14:51');
+
 -- --------------------------------------------------------
 
 --
@@ -70,6 +79,15 @@ CREATE TABLE `tags` (
   `tag_id` int(11) NOT NULL,
   `tag_name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `tags`
+--
+
+INSERT INTO `tags` (`tag_id`, `tag_name`) VALUES
+(1, 'Esty'),
+(2, 'Taggies'),
+(3, 'JAva');
 
 -- --------------------------------------------------------
 
@@ -87,6 +105,16 @@ CREATE TABLE `threads` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `threads`
+--
+
+INSERT INTO `threads` (`thread_id`, `board_id`, `title`, `first_post`, `post_count`, `created_at`, `user_id`) VALUES
+(1, 5, 'TestTitle', 'TestPost', 1, '2024-04-07 18:01:21', 1),
+(2, 5, 'Testy', 'Zesty', 1, '2024-04-07 18:07:45', 1),
+(3, 5, 'asd', 'as', 1, '2024-04-07 18:12:15', 1),
+(4, 5, 'Jsavs', 'xcxc', 1, '2024-04-07 21:14:51', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -97,6 +125,15 @@ CREATE TABLE `thread_tags` (
   `thread_id` int(11) NOT NULL,
   `tag_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `thread_tags`
+--
+
+INSERT INTO `thread_tags` (`thread_id`, `tag_id`) VALUES
+(2, 1),
+(3, 2),
+(4, 3);
 
 -- --------------------------------------------------------
 
@@ -118,7 +155,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `joined_at`, `role_id`) VALUES
-(1, 'TestMan1', 'Test_Man@hotmail.com', '$2y$10$BwsWY8TuQcGkJ0jJ1iOBvubQSY0m9l33WDhs61mJnBcN3itUSXolq', '2024-02-04 17:38:56', 1);
+(1, 'TestMan1', 'Test_Man@hotmail.com', '$2y$10$BwsWY8TuQcGkJ0jJ1iOBvubQSY0m9l33WDhs61mJnBcN3itUSXolq', '2024-02-04 17:38:56', 1),
+(2, 'Normal User', 'normal@hotmail.com', '$2y$10$/o8adMcCz/bBpxePAXUXl.nef41f/WDVeBB5gP0qDbmxmQvmC3m42', '2024-04-08 12:46:31', 1);
 
 -- --------------------------------------------------------
 
@@ -206,25 +244,25 @@ ALTER TABLE `boards`
 -- AUTO_INCREMENT voor een tabel `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT voor een tabel `tags`
 --
 ALTER TABLE `tags`
-  MODIFY `tag_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `tag_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT voor een tabel `threads`
 --
 ALTER TABLE `threads`
-  MODIFY `thread_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `thread_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT voor een tabel `user_roles`

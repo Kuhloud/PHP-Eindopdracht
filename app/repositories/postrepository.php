@@ -14,4 +14,15 @@ class PostRepository extends Repository
 
             return $this->connection->lastInsertId();
     }
+    function getPostsByThreadId($threadId)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM posts WHERE thread_id = :thread_id");
+        $stmt->bindParam(':thread_id', $threadId);
+        $stmt->execute();
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Post');
+        $posts = $stmt->fetchAll();
+
+        return $posts;
     }
+}
