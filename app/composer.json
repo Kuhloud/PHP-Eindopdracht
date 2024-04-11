@@ -1,0 +1,18 @@
+{
+    "description": "Basic MVC blog example in PHP",
+    "type": "project",
+    "require": {
+        "tinymce/tinymce": "^6.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": ".",
+            "App\\api\\controllers\\": "./api-controllers",
+            "App\\Controllers\\": "./controllers",
+            "App\\Models\\": "./models",
+            "App\\Services\\": "./services",
+            "App\\Repositories\\": "./repositories",
+            "App\\Views\\": "./views"            
+        }
+    }
+}
