@@ -1,6 +1,5 @@
 <?php
-require __DIR__ . '/repository.php';
-require __DIR__ . '/../models/threadtag.php';
+namespace Repository;
 
 class ThreadTagRepository extends Repository
 {

@@ -1,4 +1,5 @@
 <?php
+namespace Models;
 class Thread implements \JsonSerializable {
 
 private int $thread_id;

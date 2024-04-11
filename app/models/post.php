@@ -1,4 +1,5 @@
 <?php
+namespace Models;
 class Post implements \JsonSerializable {
 
 private int $post_id;

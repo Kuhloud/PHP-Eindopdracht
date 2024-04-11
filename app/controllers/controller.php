@@ -1,4 +1,5 @@
 <?php
+namespace Controllers;
 class Controller {
     
     protected function displayView($model) {        

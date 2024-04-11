@@ -1,6 +1,5 @@
 <?php
-require __DIR__ . '/repository.php';
-require __DIR__ . '/../models/tag.php';
+namespace Repository;
 
 class TagRepository extends Repository
 {

@@ -1,6 +1,5 @@
 <?php
-require __DIR__ . '/repository.php';
-require __DIR__ . '/../models/thread.php';
+namespace Repository;
 
 class ThreadRepository extends Repository
 {

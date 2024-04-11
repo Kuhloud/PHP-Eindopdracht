@@ -1,5 +1,5 @@
 <?php
-
+namespace Models;
 class Board implements \JsonSerializable {
 
     private int $board_id;

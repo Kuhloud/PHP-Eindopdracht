@@ -1,5 +1,5 @@
 <?php
-
+namespace Api\Controllers;
 class ApiController{
     protected function postRequest(){
         return $_SERVER['REQUEST_METHOD'] == 'POST';

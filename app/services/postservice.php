@@ -1,5 +1,6 @@
 <?php
-require __DIR__ . '/../repositories/postrepository.php';
+namespace Services;
+use Repository\PostRepository;
 
 
 class PostService {

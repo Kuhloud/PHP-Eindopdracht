@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/apicontroller.php';
-require __DIR__ . '/../../services/tagservice.php';
+namespace Api\Controllers;
+use Services\TagService;
 
 class TagController extends ApiController
 {

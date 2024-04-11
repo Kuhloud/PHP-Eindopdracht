@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/controller.php';
-require __DIR__ . '/../services/userservice.php';
+namespace Controllers;
+use Services\UserService;
 
 class UserController extends Controller {
 

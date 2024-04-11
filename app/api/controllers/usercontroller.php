@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/apicontroller.php';
-require __DIR__ . '/../../services/userservice.php';
+namespace Api\Controllers;
+use Services\UserService;
 
 class UserController extends ApiController {
 

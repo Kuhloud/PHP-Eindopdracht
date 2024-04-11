@@ -1,5 +1,6 @@
 <?php
-require __DIR__ . '/../repositories/tagrepository.php';
+namespace Services;
+use Repository\TagRepository;
 
 
 class TagService {

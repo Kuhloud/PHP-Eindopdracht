@@ -1,6 +1,5 @@
 <?php
-require __DIR__ . '/repository.php';
-require __DIR__ . '/../models/post.php';
+namespace Repository;
 
 class PostRepository extends Repository
 {

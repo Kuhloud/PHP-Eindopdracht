@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/controller.php';
-require __DIR__ . '/../services/postservice.php';
+namespace Controllers;
+use Services\PostService;
 
 
 class PostController extends Controller {

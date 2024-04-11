@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/apicontroller.php';
-require __DIR__ . '/../../services/threadservice.php';
+namespace Api\Controllers;
+use Services\ThreadService;
 
 class ThreadController extends ApiController
 {
