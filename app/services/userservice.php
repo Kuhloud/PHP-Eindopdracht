@@ -1,6 +1,6 @@
 <?php
 namespace Services;
-use Repository\UserRepository;
+use Repositories\UserRepository;
 
 
 class UserService {

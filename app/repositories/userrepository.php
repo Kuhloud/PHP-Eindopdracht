@@ -1,5 +1,8 @@
 <?php
-namespace Repository;
+namespace Repositories;
+
+use PDO;
+use Repositories\Repository;
 
 class UserRepository extends Repository
 {

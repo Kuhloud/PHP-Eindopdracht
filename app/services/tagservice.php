@@ -1,6 +1,6 @@
 <?php
 namespace Services;
-use Repository\TagRepository;
+use Repositories\TagRepository;
 
 
 class TagService {

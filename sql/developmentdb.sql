@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Gegenereerd op: 08 apr 2024 om 12:47
+-- Gegenereerd op: 12 apr 2024 om 19:48
 -- Serverversie: 11.1.3-MariaDB-1:11.1.3+maria~ubu2204
 -- PHP-versie: 8.2.12
 
@@ -100,7 +100,7 @@ CREATE TABLE `threads` (
   `board_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `first_post` text NOT NULL,
-  `post_count` int(11) NOT NULL DEFAULT 0,
+  `replies` int(11) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT curdate(),
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -109,7 +109,7 @@ CREATE TABLE `threads` (
 -- Gegevens worden geëxporteerd voor tabel `threads`
 --
 
-INSERT INTO `threads` (`thread_id`, `board_id`, `title`, `first_post`, `post_count`, `created_at`, `user_id`) VALUES
+INSERT INTO `threads` (`thread_id`, `board_id`, `title`, `first_post`, `replies`, `created_at`, `user_id`) VALUES
 (1, 5, 'TestTitle', 'TestPost', 1, '2024-04-07 18:01:21', 1),
 (2, 5, 'Testy', 'Zesty', 1, '2024-04-07 18:07:45', 1),
 (3, 5, 'asd', 'as', 1, '2024-04-07 18:12:15', 1),

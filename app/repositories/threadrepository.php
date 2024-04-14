@@ -1,5 +1,8 @@
 <?php
-namespace Repository;
+namespace Repositories;
+
+use PDO;
+use Repositories\Repository;
 
 class ThreadRepository extends Repository
 {
@@ -52,9 +55,9 @@ class ThreadRepository extends Repository
                 $stmt->execute();
                 return $this->connection->lastInsertId();
         }
-        function updatePostCount($threadId)
+        function updateReplies($threadId)
         {
-                $stmt = $this->connection->prepare("UPDATE threads SET post_count = post_count + 1 WHERE thread_id = :thread_id");
+                $stmt = $this->connection->prepare("UPDATE threads SET replies = replies + 1 WHERE thread_id = :thread_id");
                 $stmt->bindParam(':thread_id', $threadId);
                 $stmt->execute();
         }

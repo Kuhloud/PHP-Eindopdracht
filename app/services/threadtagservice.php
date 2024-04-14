@@ -1,6 +1,6 @@
 <?php
 namespace Services;
-use Repository\ThreadTagRepository;
+use Repositories\ThreadTagRepository;
 
 
 class ThreadTagService {

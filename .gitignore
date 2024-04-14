@@ -8,3 +8,4 @@
 /httpRequests/
 # Vendor
 /app/vendor/
+/app/views/

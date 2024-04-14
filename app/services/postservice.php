@@ -1,10 +1,10 @@
 <?php
 namespace Services;
-use Repository\PostRepository;
+use Repositories\PostRepository;
 
 
 class PostService {
-    public function insert(Post $post) {
+    public function insert($post) {
         // retrieve data
         $repository = new PostRepository();
         return $repository->insert($post->getThreadId(), $post->getUserId(), $post->getMessage());        

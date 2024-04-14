@@ -1,5 +1,5 @@
 <?php
-namespace Repository;
+namespace Repositories;
 use PDO;
 
 class BoardRepository extends Repository

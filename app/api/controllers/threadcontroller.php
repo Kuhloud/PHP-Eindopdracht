@@ -23,11 +23,6 @@ class ThreadController extends ApiController
         $newThread = $this->getJsonData();
         $this->createThread($newThread);
         }
-    if ($this->putRequest() && isset($_GET['thread_id'])) {
-        $threadId = $_GET['thread_id'];
-        $this->threadService->updatePostCount($threadId);
-        echo json_encode(["status" => "success"]);
-    }
     }
     function createThread($newThread)
     {

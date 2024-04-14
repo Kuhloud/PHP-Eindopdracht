@@ -1,6 +1,6 @@
 <?php
 namespace Services;
-use Repository\BoardRepository;
+use Repositories\BoardRepository;
 
 
 class BoardService {
