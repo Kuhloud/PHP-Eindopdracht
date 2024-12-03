@@ -1,5 +1,4 @@
 <?php
-namespace Models;
 class Tag implements \JsonSerializable {
 
 private int $tag_id;

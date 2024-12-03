@@ -1,6 +1,6 @@
 <?php
-namespace Controllers;
-use Services\ThreadService;
+require __DIR__ . '/controller.php';
+require __DIR__ . '/../services/threadservice.php';
 
 
 class ThreadController extends Controller {
@@ -28,7 +28,7 @@ class ThreadController extends Controller {
         
         $currentboard = $_SESSION['currentboard'];
         $boardId = $_SESSION['board_id'];
-        $userId = $_SESSION['user_id'];
+        $userId = $_SESSION['user'];
       
         // Retrieve the previous URL
         require __DIR__ . "/../views/thread/createthread.php";

@@ -1,8 +1,6 @@
 <?php
-namespace Repositories;
-
-use PDO;
-use Repositories\Repository;
+require __DIR__ . '/repository.php';
+require __DIR__ . '/../models/tag.php';
 
 class TagRepository extends Repository
 {

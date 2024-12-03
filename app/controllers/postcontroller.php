@@ -1,6 +1,6 @@
 <?php
-namespace Controllers;
-use Services\PostService;
+require __DIR__ . '/controller.php';
+require __DIR__ . '/../services/postservice.php';
 
 
 class PostController extends Controller {
@@ -14,17 +14,23 @@ class PostController extends Controller {
 
     // router maps this to /article and /article/index automatically
     public function index() {
-        // $threadId = $_SESSION['thread_id'];
+        $threadId = $_SESSION['thread_id'];
 
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     $postMessage = $this->sanitizeInput($_POST['postMessage']);
-        //     $userId = $_SESSION['user_id'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $postMessage = $this->sanitizeInput($_POST['postMessage']);
+            $userId = $_SESSION['user'];
 
-        //     $post = new Post();
-        //     $post->setThreadId($threadId);
-        //     $post->setUserId($userId);
-        //     $post->setMessage($postMessage);
-        //     $this->postService->insert($post);
-        // }
+            $post = new Post();
+            $post->setThreadId($threadId);
+            $post->setUserId($userId);
+            $post->setMessage($postMessage);
+            $this->postService->insert($post);
+        }
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $posts = $this->postService->getPostsByThreadId($threadId);
+        }
+      
+        // Retrieve the previous URL
+        require __DIR__ . "/../views/thread/index.php";
     }
 }

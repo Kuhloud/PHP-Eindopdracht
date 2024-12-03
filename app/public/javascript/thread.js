@@ -18,7 +18,8 @@ function createThread(user_id, board_id) {
         let promises = [];
         if (formData.tags && formData.tags.length > 0 && formData.tags[0] != '') 
         {
-            promises.push(addTags(threadData.thread.thread_id, formData.tags)
+            promises.push(
+            addTags(threadData.thread.thread_id, formData.tags)
             .then((tagData) => {
                 if (!tagData || !tagData.thread_id || !tagData.tags) {
                     console.error('Tags not found:', tagData);
@@ -43,7 +44,7 @@ async function createNewThread(board_id, title, first_post, user_id)
 {
     try
     {
-        const response = await fetch('http://localhost/api/thread', {
+        const response = await fetch('http://localhost/api/post', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
@@ -69,7 +70,7 @@ async function createNewThread(board_id, title, first_post, user_id)
         console.error('An error occurred:', error.message, 'Stack:', error.stack);
     }
 }
-async function createFirstPost(thread_id, post, user_id) {
+async function createFirstPost(thread_id, first_post, user_id) {
     try{
         const response = await fetch('http://localhost/api/post', {
             method: 'POST',
@@ -78,7 +79,7 @@ async function createFirstPost(thread_id, post, user_id) {
             },
             body: JSON.stringify({
                 thread_id: thread_id,
-                post: post,
+                first_post: first_post,
                 user_id: user_id
             })
         });

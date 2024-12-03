@@ -1,6 +1,5 @@
 <?php
-namespace Services;
-use Repositories\ThreadTagRepository;
+require __DIR__ . '/../repositories/threadtagrepository.php';
 
 
 class ThreadTagService {

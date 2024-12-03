@@ -1,5 +1,5 @@
 <?php
-namespace Controllers;
+require __DIR__ . '/controller.php';
 
 class HomeController extends Controller {
     public function index() {

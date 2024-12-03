@@ -1,5 +1,4 @@
 <?php
-namespace Models;
 Class ThreadTag implements \JsonSerializable {
 
 private int $thread_id;

@@ -1,6 +1,5 @@
 <?php
-namespace Services;
-use Repositories\ThreadRepository;
+require __DIR__ . '/../repositories/threadrepository.php';
 
 
 class ThreadService {
@@ -25,12 +24,8 @@ class ThreadService {
     public function insert($thread) {
         // retrieve data
         $repository = new ThreadRepository();
-        $threadId = $repository->insert($thread->getBoardId(), $thread->getTitle(), $thread->getFirstPost(), $thread->getUserId());   
+        $threadId = $repository->insert($thread->getBoardId(), $thread->getTitle(), $thread->getFirstPost(), $thread->getUserId());  
+        $repository->updatePostCount($threadId);   
         return $threadId;   
-    }
-    public function updateReplies($threadId) {
-        // retrieve data
-        $repository = new ThreadRepository();
-        $repository->updateReplies($threadId);
     }
 }

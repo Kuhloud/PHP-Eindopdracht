@@ -1,6 +1,6 @@
 <?php
-namespace Controllers;
-use Services\UserService;
+require __DIR__ . '/controller.php';
+require __DIR__ . '/../services/userservice.php';
 
 class UserController extends Controller {
 
@@ -46,6 +46,11 @@ class UserController extends Controller {
     {
         session_destroy();
         header("Location: /");
+    }
+    function currentUser($user)
+    {
+        $_SESSION['user'] = $user->getUserId();    
+        $_SESSION['username'] = $user->getUsername();
     }
     function checkValidUser($input, $password) {
         if (empty($input)) {

@@ -1,6 +1,6 @@
 <?php
-namespace Controllers;
-use Services\BoardService;
+require __DIR__ . '/controller.php';
+require __DIR__ . '/../services/boardservice.php';
 
 
 class BoardController extends Controller {

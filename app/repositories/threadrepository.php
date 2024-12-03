@@ -1,8 +1,6 @@
 <?php
-namespace Repositories;
-
-use PDO;
-use Repositories\Repository;
+require __DIR__ . '/repository.php';
+require __DIR__ . '/../models/thread.php';
 
 class ThreadRepository extends Repository
 {
@@ -55,9 +53,9 @@ class ThreadRepository extends Repository
                 $stmt->execute();
                 return $this->connection->lastInsertId();
         }
-        function updateReplies($threadId)
+        function updatePostCount($threadId)
         {
-                $stmt = $this->connection->prepare("UPDATE threads SET replies = replies + 1 WHERE thread_id = :thread_id");
+                $stmt = $this->connection->prepare("UPDATE threads SET post_count = post_count + 1 WHERE thread_id = :thread_id");
                 $stmt->bindParam(':thread_id', $threadId);
                 $stmt->execute();
         }

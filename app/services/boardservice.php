@@ -1,6 +1,5 @@
 <?php
-namespace Services;
-use Repositories\BoardRepository;
+require __DIR__ . '/../repositories/boardrepository.php';
 
 
 class BoardService {

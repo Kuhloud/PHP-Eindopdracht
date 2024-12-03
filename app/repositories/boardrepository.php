@@ -1,6 +1,6 @@
 <?php
-namespace Repositories;
-use PDO;
+require __DIR__ . '/repository.php';
+require __DIR__ . '/../models/board.php';
 
 class BoardRepository extends Repository
 {

@@ -1,6 +1,6 @@
 <?php
-namespace Api\Controllers;
-use Services\ThreadTagService;
+require __DIR__ . '/apicontroller.php';
+require __DIR__ . '/../../services/threadtagservice.php';
 
 class ThreadTagController extends ApiController
 {

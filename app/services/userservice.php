@@ -1,6 +1,5 @@
 <?php
-namespace Services;
-use Repositories\UserRepository;
+require __DIR__ . '/../repositories/userrepository.php';
 
 
 class UserService {
@@ -22,7 +21,15 @@ class UserService {
         $repository = new UserRepository();
 
         $hashedPassword = $this->hashPassword($plainPassword);
-        $repository->insert($username, $email, $hashedPassword);       
+        $user = $this->createUser($username, $email, $hashedPassword);
+        $repository->insert($user);       
+    }
+    function createUser($username, $email, $password) {
+        $user = new User();
+        $user->setUsername($username);
+        $user->setEmail($email);
+        $user->setPassword($password);
+        return $user;
     }
     public function getUser($userInput, $password)
     {

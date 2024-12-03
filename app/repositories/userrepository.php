@@ -1,8 +1,6 @@
 <?php
-namespace Repositories;
-
-use PDO;
-use Repositories\Repository;
+require __DIR__ . '/repository.php';
+require __DIR__ . '/../models/user.php';
 
 class UserRepository extends Repository
 {
@@ -34,13 +32,13 @@ class UserRepository extends Repository
 
                 return $username;
         }
-        function insert($username, $email, $hashedPassword)
+        function insert($user)
         {
                 $stmt = $this->connection->prepare("INSERT into users (username, email, password, joined_at) 
                 VALUES (:username, :email, :password, NOW())");
-                $stmt->bindParam(':username', $username);
-                $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':password', $hashedPassword);
+                $stmt->bindParam(':username', $user->getUsername());
+                $stmt->bindParam(':email', $user->getEmail());
+                $stmt->bindParam(':password', $user->getPassword());
 
                 try
                 {
