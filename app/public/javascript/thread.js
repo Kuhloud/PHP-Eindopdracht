@@ -97,16 +97,16 @@ async function createFirstPost(thread_id, first_post, user_id) {
     }
 }
 async function addTags(thread_id, tags) {
-    const tagData = await processTags('tag', thread_id, tags);
+    const tagData = await GetTags('tag', thread_id, tags);
     console.log('New tags added:', tagData);
     return tagData;
 }
 
 async function addThreadTags(thread_id, thread_tags) {
-    const threadTags = await processTags('threadtag', thread_id, thread_tags);
+    const threadTags = await GetTags('threadtag', thread_id, thread_tags);
     console.log('Tags added to thread:', threadTags);
 }
-async function processTags(url, thread_id, tags) {
+async function GetTags(url, thread_id, tags) {
     try {
         const response = await fetch(`http://localhost/api/${url}`, {
             method: 'POST',

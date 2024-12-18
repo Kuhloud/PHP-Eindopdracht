@@ -83,8 +83,7 @@ async function getThreads(board_id)
     if (!res.ok) {
         throw new Error('Failed to retrieve threads.');
     }
-    const threads = await res.json();
-    return threads;
+    return await res.json();
 }
 async function getUser(user_id)
 {
@@ -98,8 +97,7 @@ async function getUser(user_id)
     if (!res.ok) {
         throw new Error('Failed to retrieve user.');
     }
-    const username = await res.json();
-    return username;
+    return await res.json();
 }
 async function getTags(thread_id)
 {

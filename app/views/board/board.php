@@ -11,11 +11,11 @@
             <?php endif; ?>
         </header>
     </article>
-    <?php
-            if (session_status() == PHP_SESSION_NONE) {
-                echo "session not started";
-            } 
-        ?>
+<!--    --><?php
+//            if (session_status() == PHP_SESSION_NONE) {
+//                echo "session not started";
+//            }
+//        ?>
 </section>
 <section id="threads">
 </section>

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const url = window.location.href;
     const segments = url.split('/');
     const thread_id = segments[segments.length - 1];
-    getPosts(thread_id);
+    loadPosts(thread_id);
 });
 async function getPosts(thread_id)
 {
@@ -16,8 +16,7 @@ async function getPosts(thread_id)
     if (!res.ok) {
         throw new Error('Failed to retrieve posts.');
     }
-    const threads = await res.json();
-    return threads;
+    return await res.json();
 }
 async function createPost(thread_id, message, user_id) 
 {
@@ -47,17 +46,12 @@ async function createPost(thread_id, message, user_id)
         console.error('An error occurred:', error.message, 'Stack:', error.stack);
     }
 }
-async function loadPosts(board_id) {
+async function loadPosts(thread_id) {
     try {
-        const threads = await getThreads(board_id);
-        threads.sort((a, b) => Date.parse(a.created_at) - Date.parse(b.created_at));
-        await Promise.all(threads.map(async thread => {
-                const tags = await getTags(thread.thread_id);
-                const username = await getUser(thread.user_id);
-                const a = document.createElement('a');
-                a.setAttribute('href', `${window.location.href}/${thread.thread_id}`);
-                a.classList.add('clickable-card');
-                a.id = 'thread';
+        const posts = await getPosts(thread_id);
+        posts.sort((a, b) => Date.parse(a.posted_at) - Date.parse(b.posted_at));
+        await Promise.all(posts.map(async post => {
+                const username = await getUser(post.user_id);
     
                 const section = document.createElement('section');
                 section.classList.add('card');
@@ -65,39 +59,47 @@ async function loadPosts(board_id) {
                 const article = document.createElement('article');
                 article.classList.add('card-body', 'd-flex', 'flex-column');
     
-                const threadTitle = document.createElement('h4');
-                threadTitle.classList.add('card-title');
-                threadTitle.innerText = thread.title;
-    
-                const threadDescription = document.createElement('p');
-                threadDescription.classList.add('card-text');
-                threadDescription.innerText = thread.first_post;
-    
-                const numberOfPosts = document.createElement('small');
-                numberOfPosts.classList.add('card-subtitle', 'mb-2', 'text-muted');
-                numberOfPosts.innerText = `Number of Posts: ${thread.post_count}` ;
+                const message = document.createElement('p');
+                message.classList.add('card-text');
+                message.innerText = post.message;
+
+                // const numberOfPosts = document.createElement('small');
+                // numberOfPosts.classList.add('card-subtitle', 'mb-2', 'text-muted');
+                // numberOfPosts.innerText = `Number of Posts: ${post.post_count}` ;
 
                 const dateOfCreation = document.createElement('small');
                 dateOfCreation.classList.add('card-subtitle', 'mb-2', 'text-muted');
-                dateOfCreation.innerText = `Created at: ${thread.created_at}` ;
+                dateOfCreation.innerText = `Created at: ${post.posted_at}` ;
     
                 const user = document.createElement('small');
                 user.classList.add('card-subtitle', 'mb-2', 'text-muted');
                 user.innerText = username;
 
-                article.appendChild(threadTitle);
-                article.appendChild(threadDescription);
-                article.appendChild(numberOfPosts);
+                article.appendChild(message);
+                // article.appendChild(numberOfPosts);
                 article.appendChild(dateOfCreation);
                 article.appendChild(user);
 
 
                 section.appendChild(article);
-                a.appendChild(section);
     
-                document.getElementById('threads').appendChild(a);
+                document.getElementById('posts').appendChild(section);
         }));
     } catch (error) {
         console.error('An error occurred:', error.message, 'Stack:', error.stack);
+    }
+    async function getUser(user_id)
+    {
+        const res = await fetch(`http://localhost/api/user/username?user_id=${user_id}` ,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        if (!res.ok) {
+            throw new Error('Failed to retrieve user.');
+        }
+        return await res.json();
     }
 }
