@@ -2,7 +2,9 @@
     "description": "Basic MVC blog example in PHP",
     "type": "project",
     "require": {
-        "tinymce/tinymce": "^6.8"
+        "tinymce/tinymce": "^6.8",
+      "ext-pdo": "*",
+      "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

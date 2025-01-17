@@ -12,27 +12,19 @@ class BoardController extends Controller {
         $this->boardService = new BoardService();
     }
     public function index() {
-      
-        // retrieve data 
-        $boards = $this->boardService->getAll();
-    
-        // show view, param = accessible as $model in the view
-        // displayView maps this to /views/boards/index.php automatically
-        $this->displayView($boards);
-
-    }
-    
-    public function board() {  
-
-        $boardId = $_SESSION['board_id'];
+        if (isset($_SESSION['idForController'])) {
+            $boardId = $_SESSION['idForController'];
+        } else {
+            echo "No Session";
+        }
         $board = $this->boardService->getBoardById($boardId);
         $this->currentBoard($board);
 
         // $threads = $this->threadService->getThreads($board->getId());
         // $this->displayView($threads);
-        
 
-        require __DIR__ . "/../views/board/board.php";
+
+        require __DIR__ . "/../views/board/index.php";
     }
     function currentBoard($board)
     {

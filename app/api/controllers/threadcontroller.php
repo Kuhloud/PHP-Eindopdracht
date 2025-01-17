@@ -14,41 +14,36 @@ class ThreadController extends ApiController
 
     public function index()
     {
-
-    header("Content-type: application/json");
-    // Respond to a POST request to /api/thread
-    if ($this->postRequest()) {
-                // read JSON from the request, convert it to an article object
-        // and have the service insert the article into the database
-        $newThread = $this->getJsonData();
-
-        if (!isset($newThread->board_id, $newThread->user_id, $newThread->title, $newThread->first_post)) {
-            $this->checkRequiredFields($newThread);
-            return;
-        }
-
-        $title = $this->sanitizeInput($newThread->title);
-        $firstPost = $this->sanitizeInput($newThread->first_post);
-
-        $thread = new Thread();
-        $thread->setBoardId($newThread->board_id);
-        $thread->setTitle($title);
-        $thread->setFirstPost($firstPost);
-        $thread->setUserId($newThread->user_id);
-        try 
-        {
-            $thread->setThreadId($this->threadService->insert($thread));
-            echo json_encode(["status" => "success", "thread" => $thread]);
-        } catch (Exception $e) {
-            echo json_encode(["status" => "error", "message" => $e->getMessage()]);
-        }
-    }
-    }
-    function getThreadsByBoardId($boardId)
-    {
-        $threads = $this->threadService->getThreadsByBoardId($boardId);
         header("Content-type: application/json");
-        echo json_encode($threads);
+        // Respond to a POST request to /api/thread
+        if ($this->postRequest()) {
+            // read JSON from the request, convert it to a thread object
+            // and have the service insert the thread into the database
+            $newThread = $this->getJsonData();
+
+            if (!isset($newThread->board_id, $newThread->user_id, $newThread->title, $newThread->first_post)) {
+                $this->checkRequiredFields($newThread);
+                return;
+            }
+
+            $title = $this->sanitizeInput($newThread->title);
+            $firstPost = $this->sanitizeInput($newThread->first_post);
+
+            $thread = new Thread();
+            $thread->setBoardId($newThread->board_id);
+            $thread->setTitle($title);
+            $thread->setFirstPost($firstPost);
+            $thread->setUserId($newThread->user_id);
+            try
+            {
+                $threadId = $this->threadService->insert($thread);
+                $thread->setThreadId($threadId);
+                echo json_encode(["status" => "success", "thread" => $thread]);
+            } catch (Exception $e) {
+                echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+            }
+        }
+
     }
     private function checkRequiredFields($newThread)
     {

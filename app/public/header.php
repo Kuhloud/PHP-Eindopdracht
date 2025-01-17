@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/board">
+                <a class="nav-link" href="/home/boards">
                     Boards
                 </a>
             </li>

@@ -5,11 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24171fbe-62a8-4e3c-a39c-928cfdc3ca23" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/controllers/threadcontroller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/controllers/threadcontroller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/boardcontroller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/boardcontroller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/homecontroller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/homecontroller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/threadcontroller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/threadcontroller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/patternrouter.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/patternrouter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/header.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/public/javascript/board.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/javascript/board.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/public/javascript/boardthread.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/javascript/boardthread.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/public/javascript/thread.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/javascript/thread.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/board/board.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/board/board.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/thread/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/thread/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/repositories/userrepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/repositories/userrepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/board/board.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/board/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/board/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/thread/createthread.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +61,12 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Lucem\OneDrive\Documenten\Inholland\PHP-Eindopdracht\app\views\home" />
+      <recent name="C:\Users\Lucem\OneDrive\Documenten\Inholland\PHP-Eindopdracht\app\views\board" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -79,11 +94,30 @@
       <workItem from="1733310163734" duration="3522000" />
       <workItem from="1733399813583" duration="3836000" />
       <workItem from="1733911606032" duration="8039000" />
-      <workItem from="1734522629204" duration="1833000" />
+      <workItem from="1734522629204" duration="1868000" />
+      <workItem from="1736941200734" duration="2793000" />
+      <workItem from="1737019552840" duration="12610000" />
+      <workItem from="1737043802410" duration="3974000" />
+      <workItem from="1737111049531" duration="5976000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/repositories/threadrepository.php</url>
+          <line>44</line>
+          <properties>
+            <option name="className" value="\ThreadRepository" />
+            <option name="methodName" value="insert" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

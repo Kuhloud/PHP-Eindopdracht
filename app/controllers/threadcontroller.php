@@ -11,11 +11,9 @@ class ThreadController extends Controller {
     function __construct() {
         $this->threadService = new ThreadService();
     }
-
-    // router maps this to /article and /article/index automatically
     public function index()
     {
-        $threadId = $_SESSION['thread_id'];
+        $threadId = $_SESSION['idForController'];
         $thread = $this->threadService->getThreadById($threadId);
         $this->currentThread($thread);
         $this->displayView($thread);
@@ -24,13 +22,13 @@ class ThreadController extends Controller {
     {
         $_SESSION['currentthread'] = $thread;
     }
-    public function createthread() {
+    public function create() {
         
         $currentboard = $_SESSION['currentboard'];
-        $boardId = $_SESSION['board_id'];
+        $boardId = $_SESSION['idForController'];
         $userId = $_SESSION['user'];
       
         // Retrieve the previous URL
-        require __DIR__ . "/../views/thread/createthread.php";
+        require __DIR__ . "/../views/thread/create.php";
     }
 }

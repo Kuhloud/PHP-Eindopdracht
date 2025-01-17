@@ -36,10 +36,12 @@ class UserRepository extends Repository
         {
                 $stmt = $this->connection->prepare("INSERT into users (username, email, password, joined_at) 
                 VALUES (:username, :email, :password, NOW())");
-                $stmt->bindParam(':username', $user->getUsername());
-                $stmt->bindParam(':email', $user->getEmail());
-                $stmt->bindParam(':password', $user->getPassword());
-
+                $username = $user->getUsername();
+                $email = $user->getEmail();
+                $password = $user->getPassword();
+                $stmt->bindParam(':username', $username);
+                $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':password', $password);
                 try
                 {
                 $stmt->execute();

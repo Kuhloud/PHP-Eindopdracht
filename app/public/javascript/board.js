@@ -12,7 +12,7 @@ async function loadThreads(board_id) {
                 const tags = await getTags(thread.thread_id);
                 const username = await getUser(thread.user_id);
                 const a = document.createElement('a');
-                a.setAttribute('href', `${window.location.href}/${thread.thread_id}`);
+                a.setAttribute('href', `/thread/${thread.thread_id}`);
                 a.classList.add('clickable-card');
                 a.id = 'thread';
     

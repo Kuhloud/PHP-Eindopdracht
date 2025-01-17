@@ -34,15 +34,19 @@ class PatternRouter
         if (!isset($explodedUri[0]) || empty($explodedUri[0])) {
             $explodedUri[0] = $defaultcontroller;
         }
-        if (!isset($explodedUri[1]) || empty($explodedUri[1]) || isset($explodedUri[2])) {
+        if (!empty($explodedUri[1]) && is_numeric($explodedUri[1])) {
+            // moet gefixt worden
+            $_SESSION['idForController'] = $explodedUri[1];
+        }
+        if (!isset($explodedUri[1]) || empty($explodedUri[1]) || is_numeric($explodedUri[1])) {
             $explodedUri[1] = $defaultmethod;
         }
-        if (!empty($explodedUri[2])) {
-            $explodedUri[0] = "thread";
+        if (isset($explodedUri[2]) && is_numeric($explodedUri[2])) {
+            $_SESSION['idForController'] = $explodedUri[2];
         }
         $controllerName = $explodedUri[0] . "controller";
         $methodName = $explodedUri[1];
-        
+
 
         // load the file with the controller class
         $filename = __DIR__ . '/controllers/' . $controllerName . '.php';
@@ -58,21 +62,6 @@ class PatternRouter
         // dynamically call relevant controller method
 
         $controllerObj = new $controllerName;
-        // for board.php
-        if ($controllerName == 'boardcontroller' && $methodName != 'index') {
-            $boardId = $explodedUri[1];
-            $boardId = $controllerObj->getBoardById($boardId);
-            $_SESSION['board_id'] = $explodedUri[1]; 
-            $methodName = 'board'; 
-        }
-        // for thread.php
-        if ($controllerName == 'threadcontroller' && $api == false) {
-            $methodName = $defaultmethod;
-            $_SESSION['thread_id'] = $explodedUri[2]; 
-        }
-        else if ($controllerName == 'threadcontroller' && isset($explodedUrl[3]) && $api == false) {
-            $methodName = 'createthread';
-        }
         $controllerObj->{$methodName}();
     }
 }

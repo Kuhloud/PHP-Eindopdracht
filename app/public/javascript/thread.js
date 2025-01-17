@@ -1,44 +1,45 @@
-function createThread(user_id, board_id) {
-
+async function createThread(user_id, board_id) {
     const formData = {
         title: document.getElementById('threadTitle').value,
         first_post: document.getElementById('firstPost').value,
         tags: document.getElementById('tags').value.split(',').map(tag => tag.trim())
     };
-    if (formData.title == '' || formData.first_post == '') {
+
+    if (formData.title === '' || formData.first_post === '') {
         displayError('Title and first post are required');
         return;
     }
-    createNewThread(board_id, formData.title, formData.first_post, user_id)
-    .then((threadData) => {
+
+    try {
+        const threadData = await createNewThread(board_id, formData.title, formData.first_post, user_id);
+
         if (!threadData || !threadData.thread) {
             console.error('Thread not found:', threadData);
             return;
         }
-        let promises = [];
-        if (formData.tags && formData.tags.length > 0 && formData.tags[0] != '') 
-        {
+
+        const promises = [];
+
+        if (formData.tags && formData.tags.length > 0 && formData.tags[0] !== '') {
             promises.push(
-            addTags(threadData.thread.thread_id, formData.tags)
-            .then((tagData) => {
-                if (!tagData || !tagData.thread_id || !tagData.tags) {
-                    console.error('Tags not found:', tagData);
-                    return;
-                }
-                return addThreadTags(tagData.thread_id, tagData.tags);
-            })
-        );
+                addTags(threadData.thread.thread_id, formData.tags)
+                    .then((tagData) => {
+                        if (!tagData || !tagData.thread_id || !tagData.tags) {
+                            console.error('Tags not found:', tagData);
+                            return;
+                        }
+                        return addThreadTags(tagData.thread_id, tagData.tags);
+                    })
+            );
         }
+
         promises.push(createFirstPost(threadData.thread.thread_id, threadData.thread.first_post, threadData.thread.user_id));
-        return Promise.all(promises);
-    })
-    .then(() => 
-    {
+
+        await Promise.all(promises);
         window.location.href = `http://localhost/board/${board_id}`;
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error:', error.message, 'Stack:', error.stack);
-    });
+    }
 }
 async function createNewThread(board_id, title, first_post, user_id) 
 {
@@ -58,8 +59,7 @@ async function createNewThread(board_id, title, first_post, user_id)
         })
         if (!response.ok) {
             const error = await response.text();
-            console.log(error);
-            throw new Error('Failed to create thread');
+            console.log('Failed to create thread');
         }
         const data = await response.json();
         console.log('Thread created:', data);
