@@ -45,7 +45,7 @@ async function createNewThread(board_id, title, first_post, user_id)
 {
     try
     {
-        const response = await fetch('http://localhost/api/post', {
+        const response = await fetch('http://localhost/api/thread', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
@@ -58,7 +58,7 @@ async function createNewThread(board_id, title, first_post, user_id)
             })
         })
         if (!response.ok) {
-            const error = await response.text();
+            await response.text();
             console.log('Failed to create thread');
         }
         const data = await response.json();

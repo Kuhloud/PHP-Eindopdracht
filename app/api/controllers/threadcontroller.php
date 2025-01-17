@@ -18,13 +18,8 @@ class ThreadController extends ApiController
         // Respond to a POST request to /api/thread
         if ($this->postRequest()) {
             // read JSON from the request, convert it to a thread object
-            // and have the service insert the thread into the database
             $newThread = $this->getJsonData();
-
-            if (!isset($newThread->board_id, $newThread->user_id, $newThread->title, $newThread->first_post)) {
-                $this->checkRequiredFields($newThread);
-                return;
-            }
+            $this->checkRequiredFields($newThread);
 
             $title = $this->sanitizeInput($newThread->title);
             $firstPost = $this->sanitizeInput($newThread->first_post);
@@ -34,9 +29,11 @@ class ThreadController extends ApiController
             $thread->setTitle($title);
             $thread->setFirstPost($firstPost);
             $thread->setUserId($newThread->user_id);
+            // and have the service insert the thread into the database
             try
             {
                 $threadId = $this->threadService->insert($thread);
+                $thread = $this->threadService->getThreadById($threadId);
                 $thread->setThreadId($threadId);
                 echo json_encode(["status" => "success", "thread" => $thread]);
             } catch (Exception $e) {
