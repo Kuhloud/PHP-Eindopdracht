@@ -14,9 +14,9 @@
     <form id="createThread" onsubmit="event.preventDefault()">
         <section class="mb-3">
             <label for="postMessage" class="form-label">Enter Message:</label>
-            <textarea name=postMessage" class="form-control" id="firstPost" rows="6"></textarea>
+            <textarea name="postMessage" class="form-control" id="post" rows="6"></textarea>
         </section>
-        <button type="submit" onclick="createPost()" class="btn btn-primary">Post</button>
+        <button type="submit" onclick="createPost(<?= $_SESSION['idForController'] ?>, <?= $_SESSION['user'] ?>)" class="btn btn-primary">Post</button>
     </form>
 </section>
 <?php include ('./footer.php') ?>

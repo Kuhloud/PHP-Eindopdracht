@@ -18,7 +18,23 @@ async function getPosts(thread_id)
     }
     return await res.json();
 }
-async function createPost(thread_id, message, user_id) 
+async function createPost(thread_id, user_id)
+{
+    const message = document.getElementById('post').value;
+    if (message === '') {
+        displayError('Title and first post are required');
+        return;
+    }
+    try
+    {
+        await createNewPost(thread_id, message, user_id)
+        window.location.reload();
+    }
+    catch (error) {
+        console.error('Error:', error.message, 'Stack:', error.stack);
+    }
+}
+async function createNewPost(thread_id, message, user_id)
 {
     try
     {
@@ -28,6 +44,7 @@ async function createPost(thread_id, message, user_id)
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
+                thread_id: thread_id,
                 message: message,
                 user_id: user_id
             })
@@ -35,11 +52,10 @@ async function createPost(thread_id, message, user_id)
         if (!response.ok) {
             const error = await response.text();
             console.log(error);
-            throw new Error('Failed to create thread');
+            throw new Error('Failed to create post');
         }
-        const data = await response.json();
-        console.log('Thread created:', data);
-        return data;
+        console.log('New post created');
+        return await response.json();
 
     }
     catch (error) {

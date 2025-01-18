@@ -61,9 +61,8 @@ async function createNewThread(board_id, title, first_post, user_id)
             await response.text();
             console.log('Failed to create thread');
         }
-        const data = await response.json();
-        console.log('Thread created:', data);
-        return data;
+        console.log('Thread created');
+        return await response.json();
 
     }
     catch (error) {
@@ -79,7 +78,7 @@ async function createFirstPost(thread_id, first_post, user_id) {
             },
             body: JSON.stringify({
                 thread_id: thread_id,
-                first_post: first_post,
+                message: first_post,
                 user_id: user_id
             })
         });
@@ -88,8 +87,8 @@ async function createFirstPost(thread_id, first_post, user_id) {
             console.log(error);
             throw new Error('Failed to create first post');
         }
-        const data = await response.json();
-        console.log('First Post:', data);
+        await response.json();
+        console.log('First Post');
 
     }
     catch (error) {

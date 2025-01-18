@@ -19,23 +19,19 @@ class PostController extends ApiController
         if (!$this->postRequest()) {
             return;
         }
-        $firstPost = $this->getJsonData();
+        $message = $this->getJsonData();
+        $this->checkRequiredFields($message);
     
-        if (!isset($firstPost->thread_id, $firstPost->user_id, $firstPost->first_post)) {
-            $this->checkRequiredFields($firstPost);
-            return;
-        }
-    
-        $resanitizedMessage = $this->sanitizeInput($firstPost->first_post);
+        $sanitizedMessage = $this->sanitizeInput($message->message);
     
         $post = new Post();
-        $post->setThreadId($firstPost->thread_id);
-        $post->setUserId($firstPost->user_id);
-        $post->setMessage($resanitizedMessage);
+        $post->setThreadId($message->thread_id);
+        $post->setUserId($message->user_id);
+        $post->setMessage($sanitizedMessage);
     
         try {
             $post->setPostId($this->postService->insert($post));
-            echo json_encode(["status" => "success", "post" => $post], JSON_THROW_ON_ERROR);
+            echo json_encode(["status" => "success"], JSON_THROW_ON_ERROR);
         } catch (Exception $e) {
             echo json_encode(["status" => "error", "message" => $e->getMessage()], JSON_THROW_ON_ERROR);
         }
@@ -57,7 +53,7 @@ class PostController extends ApiController
     }
     private function checkRequiredFields($firstPost)
     {
-        $requiredFields = ['thread_id', 'user_id', 'first_post'];
+        $requiredFields = ['thread_id', 'message', 'user_id'];
         $missingFields = [];
 
         foreach ($requiredFields as $field) {
