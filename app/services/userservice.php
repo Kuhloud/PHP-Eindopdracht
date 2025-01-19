@@ -34,7 +34,12 @@ class UserService {
     public function getUser($userInput, $password)
     {
         $repository = new UserRepository();
-        return $repository->getUser($userInput, $password);
+        $user = $repository->getUser($userInput);
+        if (!$user || !$repository->verifyPassword($password, $user->getPassword())) {
+            return false;
+        }
+        $user->setPassword("");
+        return $user;
     }
     public function getUsername($userId)
     {

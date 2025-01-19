@@ -277,6 +277,7 @@ ALTER TABLE `user_roles`
 -- Beperkingen voor tabel `posts`
 --
 ALTER TABLE `posts`
+  ADD CONSTRAINT `fk_posts_thread` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`thread_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`thread_id`),
   ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
@@ -291,6 +292,7 @@ ALTER TABLE `threads`
 -- Beperkingen voor tabel `thread_tags`
 --
 ALTER TABLE `thread_tags`
+  ADD CONSTRAINT `fk_thread_tags_threads` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`thread_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `thread_tags_ibfk_1` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`thread_id`),
   ADD CONSTRAINT `thread_tags_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`);
 

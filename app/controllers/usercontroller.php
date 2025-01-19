@@ -17,12 +17,10 @@ class UserController extends Controller {
             $username = $this->sanitizeInput($_POST['inputUsername']);
             $email = $this->sanitizeInput($_POST['inputEmail']);
             $password = $_POST['inputPassword'];
-            $errorMessage = $this->checkForErrors($username, $email, $password);
+            $errorMessage = $this->checkValidSignupInput($username, $email, $password);
             if (empty($errorMessage)) {
                 $this->userService->insert($username, $email, $password);
-                $user = $this->userService->getUser($username, $password);
-                $this->currentUser($user);
-                header("Location: /");
+                $user = $this->getUser($username, $password);
             }
         } 
         require __DIR__ . "/../views/user/index.php";
@@ -32,14 +30,26 @@ class UserController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $input = $this->sanitizeInput($_POST['UserInput']);
             $password = $_POST['UserPassword'];
-            $errorMessage = $this->checkValidUser($input, $password);
+            $errorMessage = $this->checkValidLoginInput($input, $password);
             if (empty($errorMessage)) {
-                $user = $this->userService->getUser($input, $password);
-                $this->currentUser($user);
-                header("Location: /");
+                $errorMessage = $this->getUser($input, $password);
             }
         } 
         require __DIR__ . "/../views/user/login.php";
+    }
+    function getUser($input, $password)
+    {
+        try {
+            $usernameOrEmail = $this->checkIfEmail($input);
+            $user = $this->userService->getUser($usernameOrEmail, $password);
+            if ($user != null) {
+                $this->currentUser($user);
+                header("Location: /");
+            }
+        }
+        catch (Exception $e) {
+
+        }
     }
 
     public function logout()
@@ -49,10 +59,10 @@ class UserController extends Controller {
     }
     function currentUser($user)
     {
-        $_SESSION['user'] = $user->getUserId();    
+        $_SESSION['user'] = $user->getUserId();
         $_SESSION['username'] = $user->getUsername();
     }
-    function checkValidUser($input, $password) {
+    function checkValidLoginInput($input, $password) {
         if (empty($input)) {
             $errorMessage = "Username/Email address is required";
         }
@@ -64,7 +74,14 @@ class UserController extends Controller {
         }
         return $errorMessage;
     }
-    function checkForErrors($username, $email, $password) {
+    public function checkIfEmail($loginInput) {
+        $sanitizedUsername = filter_var($loginInput, FILTER_SANITIZE_EMAIL);
+        if (filter_var($loginInput, FILTER_VALIDATE_EMAIL)) {
+            return $sanitizedUsername;
+        }
+        return htmlspecialchars($loginInput, ENT_QUOTES, 'UTF-8');
+    }
+    function checkValidSignupInput($username, $email, $password) {
         if (empty($username)) {
             $errorMessage = "Username is required";
         }

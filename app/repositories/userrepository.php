@@ -4,19 +4,16 @@ require __DIR__ . '/../models/user.php';
 
 class UserRepository extends Repository
 {
-        function getUser($userInput, $password)
+        function getUser($userInput)
         {
             try {
-                $stmt = $this->connection->prepare("SELECT * FROM users WHERE username = :username OR email = :email AND password = :password");
+                $stmt = $this->connection->prepare("SELECT * FROM users WHERE username = :username OR email = :email");
                 $stmt->bindParam(':username', $userInput);
                 $stmt->bindParam(':email', $userInput);
-                $stmt->bindParam(':password', $password);
                 $stmt->execute();
     
                 $stmt->setFetchMode(PDO::FETCH_CLASS, 'User');
-                $user = $stmt->fetch();
-    
-                return $user;
+                return $stmt->fetch();
             } catch (PDOException $e) {
                 echo $e;
             }
@@ -28,9 +25,7 @@ class UserRepository extends Repository
                 $stmt->execute();
 
                 $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
-                $username = $stmt->fetch();
-
-                return $username;
+                return $stmt->fetch();
         }
         function insert($user)
         {
@@ -72,4 +67,8 @@ class UserRepository extends Repository
                         return false;
                 }
         }
+    function verifyPassword($password, $hashedPassword)
+    {
+        return password_verify($password, $hashedPassword);
+    }
 }
