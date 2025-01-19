@@ -61,9 +61,9 @@ class ThreadRepository extends Repository
         }
         function updatePostCount($threadId, $postCountChange)
         {
-                $stmt = $this->connection->prepare("UPDATE threads SET post_count = post_count + :post_count WHERE thread_id = :thread_id");
-                $stmt->bindParam(':thread_id', $threadId);
-                $stmt->bindParam(':post_count', $postCountChange);
-                $stmt->execute();
+            $stmt = $this->connection->prepare("UPDATE threads t JOIN boards b ON t.board_id = b.board_id SET t.post_count = t.post_count + :post_count, b.total_messages = b.total_messages + :post_count WHERE t.thread_id = :thread_id");
+            $stmt->bindParam(':thread_id', $threadId);
+            $stmt->bindParam(':post_count', $postCountChange);
+            $stmt->execute();
         }
     }

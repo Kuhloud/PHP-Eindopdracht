@@ -80,13 +80,6 @@ async function updatePostCount(thread_id, postCountChange)
         console.log(error);
         throw new Error('Failed to update post count');
     }
-
-    if (!response.ok) {
-        const error = await response.text();
-        console.log(error);
-        throw new Error('Failed to update post count');
-    }
-
     console.log('Post count updated successfully');
 }
 async function loadPosts(thread_id) {
@@ -125,6 +118,7 @@ async function loadPosts(thread_id) {
                     const deleteButton = createDeleteButton();
                     deleteButton.addEventListener('click', async function() {
                         await deletePost(post.post_id);
+                        await updatePostCount(thread_id, -1)
                         const postElement = this.parentNode;
                         postElement.remove();
                     });
@@ -142,8 +136,8 @@ function createDeleteButton() {
     return deleteButton;
 }
 async function deletePost(post_id) {
-    const res = await fetch(`http://localhost/api/thread/delete?post_id=${post_id}`, {
-        method: 'DELETE',  // Change method to DELETE
+    const res = await fetch(`http://localhost/api/post/delete?post_id=${post_id}`, {
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         }

@@ -26,4 +26,8 @@ class BoardService {
         $repository = new BoardRepository();
         $repository->insert($board);        
     }
+    public function updateThreadCount($board_id, $threadCountChange) {
+        $repository = new BoardRepository();
+        $repository->updateThreadCount($board_id, $threadCountChange);
+    }
 }

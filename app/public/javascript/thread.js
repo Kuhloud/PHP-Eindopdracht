@@ -12,34 +12,48 @@ async function createThread(user_id, board_id) {
 
     try {
         const threadData = await createNewThread(board_id, formData.title, formData.first_post, user_id);
-
         if (!threadData || !threadData.thread) {
             console.error('Thread not found:', threadData);
             return;
         }
+        await updateThreadCount(board_id, 1)
 
-        const promises = [];
 
         if (formData.tags && formData.tags.length > 0 && formData.tags[0] !== '') {
-            promises.push(
-                addTags(threadData.thread.thread_id, formData.tags)
-                    .then((tagData) => {
-                        if (!tagData || !tagData.thread_id || !tagData.tags) {
-                            console.error('Tags not found:', tagData);
-                            return;
-                        }
-                        return addThreadTags(tagData.thread_id, tagData.tags);
-                    })
-            );
+            await addTags(threadData.thread.thread_id, formData.tags)
+                .then((tagData) => {
+                    if (!tagData || !tagData.thread_id || !tagData.tags) {
+                        console.error('Tags not found:', tagData);
+                        return;
+                    }
+                    return addThreadTags(tagData.thread_id, tagData.tags);
+                })
         }
-
-        promises.push(createFirstPost(threadData.thread.thread_id, threadData.thread.first_post, threadData.thread.user_id));
-
-        await Promise.all(promises);
+        await createFirstPost(threadData.thread.thread_id, threadData.thread.first_post, threadData.thread.user_id);
+        await updatePostCount(threadData.thread.thread_id, 1)
         window.location.href = `http://localhost/board/${board_id}`;
     } catch (error) {
         console.error('Error:', error.message, 'Stack:', error.stack);
     }
+}
+async function updateThreadCount(board_id, threadCountChange)
+{
+    const response = await fetch(`http://localhost/api/board/updateThreadCount?board_id=${board_id}`,
+        {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                thread_count: threadCountChange
+            })
+        })
+    if (!response.ok) {
+        const error = await response.text();
+        console.log(error);
+        throw new Error('Failed to update thread count');
+    }
+    console.log('Thread count updated successfully');
 }
 async function createNewThread(board_id, title, first_post, user_id) 
 {

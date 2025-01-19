@@ -1,5 +1,7 @@
 <?php include ('./header.php') ?>
 <script src="../javascript/board.js"></script>
+<script src="../javascript/thread.js"></script>
+<script src="../javascript/boardthread.js"></script>
 <title><?= $board->getBoardName()?> - Inholland Forum</title>
 <section class="container">
     <article class="row">

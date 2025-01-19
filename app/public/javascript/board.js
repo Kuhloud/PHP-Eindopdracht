@@ -62,7 +62,9 @@ async function loadThreads(board_id) {
                 {
                     const deleteButton = createDeleteButton();
                     deleteButton.addEventListener('click', async function() {
+                        await updatePostCount(thread.thread_id, -1)
                         await deleteThread(thread.thread_id);
+                        await updateThreadCount(board_id, -1)
                         const threadElement = this.parentNode;
                         threadElement.remove();
                     });
@@ -141,16 +143,6 @@ async function getUser(user_id)
         throw new Error('Failed to retrieve user.');
     }
     return await res.json();
-}
-async function isStaff($user_id)
-{
-    const res = await fetch(`http://localhost/api/threadtag?thread_id=${user_id}`,
-        {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
 }
 async function getTags(thread_id)
 {

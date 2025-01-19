@@ -35,7 +35,6 @@ class PatternRouter
             $explodedUri[0] = $defaultcontroller;
         }
         if (!empty($explodedUri[1]) && is_numeric($explodedUri[1])) {
-            // moet gefixt worden
             $_SESSION['idForController'] = $explodedUri[1];
         }
         if (!isset($explodedUri[1]) || empty($explodedUri[1]) || is_numeric($explodedUri[1])) {
@@ -60,7 +59,6 @@ class PatternRouter
             die();
         }
         // dynamically call relevant controller method
-
         $controllerObj = new $controllerName;
         $controllerObj->{$methodName}();
     }

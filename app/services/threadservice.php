@@ -24,11 +24,8 @@ class ThreadService {
     public function insert($thread) {
         // retrieve data
         $repository = new ThreadRepository();
-        $threadId = $repository->insert($thread->getBoardId(), $thread->getTitle(), $thread->getFirstPost(), $thread->getUserId());  
-        $repository->updatePostCount($threadId);   
-        return $threadId;   
+        return $repository->insert($thread->getBoardId(), $thread->getTitle(), $thread->getFirstPost(), $thread->getUserId());
     }
-
     public function deleteThread($threadId) {
         // retrieve data
         $repository = new ThreadRepository();

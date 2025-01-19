@@ -11,7 +11,6 @@ class PostController extends ApiController
     {
         $this->postService = new PostService();
     }
-
     public function index()
     {
         header("Content-type: application/json");
@@ -57,12 +56,6 @@ class PostController extends ApiController
             "message" => "Post deleted"
         ]);
     }
-    public function user($userId)
-    {
-        $posts = $this->postService->getPostsByUserId($userId);
-        header("Content-type: application/json");
-        echo json_encode($posts);
-    }
     private function checkRequiredFields($firstPost)
     {
         $requiredFields = ['thread_id', 'message', 'user_id'];
@@ -79,8 +72,8 @@ class PostController extends ApiController
             echo json_encode([
             "status" => "error", 
             "message" => "Missing required fields", 
-            "missing_fields" => $missingFields
-            ], JSON_THROW_ON_ERROR);
+            //"missing_fields" => $missingFields
+            ]);
         return;
         }
     }
