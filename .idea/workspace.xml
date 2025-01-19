@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24171fbe-62a8-4e3c-a39c-928cfdc3ca23" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/controllers/usercontroller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/usercontroller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,26 +89,12 @@
       <workItem from="1737111049531" duration="10305000" />
       <workItem from="1737206621667" duration="7491000" />
       <workItem from="1737288481536" duration="3043000" />
-      <workItem from="1737291765259" duration="5836000" />
+      <workItem from="1737291765259" duration="27079000" />
+      <workItem from="1737322346040" duration="3000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="php-line-method">
-          <url>file://$PROJECT_DIR$/app/repositories/threadrepository.php</url>
-          <line>44</line>
-          <properties>
-            <option name="className" value="\ThreadRepository" />
-            <option name="methodName" value="insert" />
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

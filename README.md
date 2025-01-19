@@ -1,9 +1,19 @@
 http://localhost
 
-//Member : User
+//Administrator : User
 Username: TestMan1
 Email: Test_Man@hotmail.com
 Password: TestPassword
+
+//Moderator : User
+Username: 2025Man
+Email: man@gmail.com
+Password: 2025
+
+//Member : User
+Username: nerd
+Email: nerd@gmail.com
+Password: nerd
 
 // Instructies
 Open Docker
