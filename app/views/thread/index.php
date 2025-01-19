@@ -9,6 +9,11 @@
     </article>
 </section>
 <section id="posts">
+    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] != 1) : ?>
+        <script>
+            const userRole = <?php echo json_encode($_SESSION['user_role']); ?>;
+        </script>
+    <?php endif; ?>
 </section>
 <section class="card-body">
     <form id="createThread" onsubmit="event.preventDefault()">

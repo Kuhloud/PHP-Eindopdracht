@@ -42,6 +42,29 @@ class ThreadController extends ApiController
             echo json_encode(["status" => "error", "message" => $e->getMessage()]);
         }
     }
+    public function updateCount()
+    {
+        header("Content-type: application/json");
+        // Respond to a PUT request to /api/thread
+        if (!$this->putRequest()) {
+            return;
+        }
+        $threadId = $_GET['thread_id'];
+        $postCountChange = $this->getJsonData();
+        $this->threadService->updatePostCount($threadId, $postCountChange->post_count);
+    }
+    public function delete()
+    {
+        if (!$this->deleteRequest()) {
+            return;
+        }
+        $threadId = $_GET['thread_id'];
+        $this->threadService->deleteThread($threadId);
+        echo json_encode([
+            "status" => "success",
+            "message" => "Thread deleted"
+        ]);
+    }
     private function checkRequiredFields($newThread)
     {
         $requiredFields = ['board_id', 'user_id', 'title', 'first_post'];
@@ -64,7 +87,7 @@ class ThreadController extends ApiController
     public function threads()
     {
         if (!$this->getRequest()) {
-            return json_encode("error: invalid request");;
+            return;
         }
         try 
         {

@@ -53,10 +53,17 @@ class ThreadRepository extends Repository
                 $stmt->execute();
                 return $this->connection->lastInsertId();
         }
-        function updatePostCount($threadId)
+        function deleteThread($thread_id)
         {
-                $stmt = $this->connection->prepare("UPDATE threads SET post_count = post_count + 1 WHERE thread_id = :thread_id");
+            $stmt = $this->connection->prepare("DELETE FROM threads WHERE thread_id = :thread_id");
+            $stmt->bindParam(':thread_id', $thread_id);
+            $stmt->execute();
+        }
+        function updatePostCount($threadId, $postCountChange)
+        {
+                $stmt = $this->connection->prepare("UPDATE threads SET post_count = post_count + :post_count WHERE thread_id = :thread_id");
                 $stmt->bindParam(':thread_id', $threadId);
+                $stmt->bindParam(':post_count', $postCountChange);
                 $stmt->execute();
         }
     }

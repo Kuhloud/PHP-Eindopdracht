@@ -21,7 +21,6 @@ class BoardService {
         $boardId = $repository->getBoardIdWithName($boardName);
         return $boardId;
     }
-
     public function insert($board) {
         // retrieve data
         $repository = new BoardRepository();

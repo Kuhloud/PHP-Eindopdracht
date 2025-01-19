@@ -45,6 +45,18 @@ class PostController extends ApiController
             echo json_encode($posts);
         }
     }
+    public function delete()
+    {
+        if (!$this->deleteRequest()) {
+            return;
+        }
+        $postId = $_GET['post_id'];
+        $this->postService->deletePost($postId);
+        echo json_encode([
+            "status" => "success",
+            "message" => "Post deleted"
+        ]);
+    }
     public function user($userId)
     {
         $posts = $this->postService->getPostsByUserId($userId);

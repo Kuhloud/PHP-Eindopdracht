@@ -49,27 +49,70 @@ async function loadThreads(board_id) {
                 article.appendChild(user);
 
                 if (Array.isArray(tags)) {
-                    const tagList = document.createElement('article');
-                    tagList.classList.add('card-body', 'd-flex');
+                    const tagList = createTagList(tags);
                     article.appendChild(tagList);
-                    tags.forEach(tagName => {
-                        const span = document.createElement('span');
-                        span.classList.add('badge', 'rounded-pill', 'd-inline');
-                        span.style.display = 'inline';
-                        span.style.backgroundColor = "#E30380";
-                        span.innerText = tagName;
-                        tagList.appendChild(span);
-                    });
                 }
 
                 section.appendChild(article);
                 a.appendChild(section);
-    
-                document.getElementById('threads').appendChild(a);
+
+                const element = document.getElementById('threads');
+                element.appendChild(a);
+                if (userRole === 3 || userRole === 2)
+                {
+                    const deleteButton = createDeleteButton();
+                    deleteButton.addEventListener('click', async function() {
+                        await deleteThread(thread.thread_id);
+                        const threadElement = this.parentNode;
+                        threadElement.remove();
+                    });
+                    element.appendChild(deleteButton);
+                }
         }));
     } catch (error) {
         console.error('An error occurred:', error.message, 'Stack:', error.stack);
     }
+}
+function createTagList(tags) {
+    const tagList = document.createElement('article');
+    tagList.classList.add('card-body', 'd-flex');
+
+    tags.forEach(tagName => {
+        const span = createTagSpan(tagName);
+        tagList.appendChild(span);
+    });
+
+    return tagList;
+}
+
+function createTagSpan(tagName) {
+    const span = document.createElement('span');
+    span.classList.add('badge', 'rounded-pill', 'd-inline');
+    span.style.display = 'inline';
+    span.style.backgroundColor = "#E30380";
+    span.innerText = tagName;
+    return span;
+}
+function createDeleteButton() {
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('btn', 'btn-danger', 'mt-2');  // Adding classes for Bootstrap button styles
+    deleteButton.innerText = 'Delete';
+
+    return deleteButton;
+}
+async function deleteThread(thread_id) {
+    const res = await fetch(`http://localhost/api/thread/delete?thread_id=${thread_id}`, {
+        method: 'DELETE',  // Change method to DELETE
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!res.ok) {
+        throw new Error('Failed to delete the thread.');
+    }
+
+    return await res.json();  // Return the response, if needed
 }
 async function getThreads(board_id)
 {
@@ -98,6 +141,16 @@ async function getUser(user_id)
         throw new Error('Failed to retrieve user.');
     }
     return await res.json();
+}
+async function isStaff($user_id)
+{
+    const res = await fetch(`http://localhost/api/threadtag?thread_id=${user_id}`,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 }
 async function getTags(thread_id)
 {

@@ -16,6 +16,9 @@ class ApiController{
     protected function deleteRequest(){
         return $_SERVER['REQUEST_METHOD'] == 'DELETE';
     }
+    protected function patchRequest(){
+        return $_SERVER['REQUEST_METHOD'] == 'PATCH';
+    }
 
     protected function getJsonData() {
         $json = file_get_contents('php://input', true);

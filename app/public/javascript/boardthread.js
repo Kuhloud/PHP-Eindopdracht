@@ -28,6 +28,7 @@ async function createPost(thread_id, user_id)
     try
     {
         await createNewPost(thread_id, message, user_id)
+        await updatePostCount(thread_id, 1)
         window.location.reload();
     }
     catch (error) {
@@ -59,8 +60,34 @@ async function createNewPost(thread_id, message, user_id)
 
     }
     catch (error) {
-        console.error('An error occurred:', error.message, 'Stack:', error.stack);
+        console.error('An error occurred:');
     }
+}
+async function updatePostCount(thread_id, postCountChange)
+{
+    const response = await fetch(`http://localhost/api/thread/updateCount?thread_id=${thread_id}`,
+        {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            post_count: postCountChange
+        })
+    })
+    if (!response.ok) {
+        const error = await response.text();
+        console.log(error);
+        throw new Error('Failed to update post count');
+    }
+
+    if (!response.ok) {
+        const error = await response.text();
+        console.log(error);
+        throw new Error('Failed to update post count');
+    }
+
+    console.log('Post count updated successfully');
 }
 async function loadPosts(thread_id) {
     try {
@@ -79,10 +106,6 @@ async function loadPosts(thread_id) {
                 message.classList.add('card-text');
                 message.innerText = post.message;
 
-                // const numberOfPosts = document.createElement('small');
-                // numberOfPosts.classList.add('card-subtitle', 'mb-2', 'text-muted');
-                // numberOfPosts.innerText = `Number of Posts: ${post.post_count}` ;
-
                 const dateOfCreation = document.createElement('small');
                 dateOfCreation.classList.add('card-subtitle', 'mb-2', 'text-muted');
                 dateOfCreation.innerText = `Created at: ${post.posted_at}` ;
@@ -92,30 +115,58 @@ async function loadPosts(thread_id) {
                 user.innerText = username;
 
                 article.appendChild(message);
-                // article.appendChild(numberOfPosts);
                 article.appendChild(dateOfCreation);
                 article.appendChild(user);
 
-
                 section.appendChild(article);
-    
-                document.getElementById('posts').appendChild(section);
+                const element = document.getElementById('posts').appendChild(section);
+                if (userRole === 3 || userRole === 2)
+                {
+                    const deleteButton = createDeleteButton();
+                    deleteButton.addEventListener('click', async function() {
+                        await deletePost(post.post_id);
+                        const postElement = this.parentNode;
+                        postElement.remove();
+                    });
+                    element.appendChild(deleteButton);
+                }
         }));
     } catch (error) {
         console.error('An error occurred:', error.message, 'Stack:', error.stack);
-    }
-    async function getUser(user_id)
-    {
-        const res = await fetch(`http://localhost/api/user/username?user_id=${user_id}` ,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-        if (!res.ok) {
-            throw new Error('Failed to retrieve user.');
+}
+function createDeleteButton() {
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('btn', 'btn-danger', 'mt-2');
+    deleteButton.innerText = 'Delete';
+
+    return deleteButton;
+}
+async function deletePost(post_id) {
+    const res = await fetch(`http://localhost/api/thread/delete?post_id=${post_id}`, {
+        method: 'DELETE',  // Change method to DELETE
+        headers: {
+            'Content-Type': 'application/json'
         }
-        return await res.json();
+    });
+
+    if (!res.ok) {
+        throw new Error('Failed to delete the thread.');
     }
+
+    return await res.json();  // Return the response, if needed
+}
+async function getUser(user_id)
+{
+    const res = await fetch(`http://localhost/api/user/username?user_id=${user_id}` ,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    if (!res.ok) {
+        throw new Error('Failed to retrieve user.');
+    }
+    return await res.json();
+}
 }

@@ -47,4 +47,8 @@ public function getFirstPost() {
 public function getPostCount() {
     return $this->post_count;
 }
+public function getCreatedAt() {
+    return $this->created_at;
+}
+
 }

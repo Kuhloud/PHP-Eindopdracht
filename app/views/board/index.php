@@ -18,5 +18,10 @@
 //        ?>
 </section>
 <section id="threads">
+    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] != 1) : ?>
+        <script>
+            const userRole = <?php echo json_encode($_SESSION['user_role']); ?>;
+        </script>
+    <?php endif; ?>
 </section>
 <?php include ('./footer.php') ?>

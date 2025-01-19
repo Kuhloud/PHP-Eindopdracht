@@ -28,4 +28,14 @@ class ThreadService {
         $repository->updatePostCount($threadId);   
         return $threadId;   
     }
+
+    public function deleteThread($threadId) {
+        // retrieve data
+        $repository = new ThreadRepository();
+        $repository->deleteThread($threadId);
+    }
+    public function updatePostCount($threadId, $postCountChange) {
+        $repository = new ThreadRepository();
+        $repository->updatePostCount($threadId, $postCountChange);
+    }
 }

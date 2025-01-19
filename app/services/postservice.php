@@ -14,4 +14,9 @@ class PostService {
         $posts = $repository->getPostsByThreadId($threadId);
         return $posts;
     }
+    public function deletePost($postId) {
+        // retrieve data
+        $repository = new PostRepository();
+        $repository->deletePost($postId);
+    }
 }

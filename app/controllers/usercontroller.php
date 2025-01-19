@@ -20,7 +20,7 @@ class UserController extends Controller {
             $errorMessage = $this->checkValidSignupInput($username, $email, $password);
             if (empty($errorMessage)) {
                 $this->userService->insert($username, $email, $password);
-                $user = $this->getUser($username, $password);
+                $errorMessage = $this->getUser($username, $password);
             }
         } 
         require __DIR__ . "/../views/user/index.php";
@@ -42,10 +42,11 @@ class UserController extends Controller {
         try {
             $usernameOrEmail = $this->checkIfEmail($input);
             $user = $this->userService->getUser($usernameOrEmail, $password);
-            if ($user != null) {
-                $this->currentUser($user);
-                header("Location: /");
+            if ($user == null) {
+                return "Invalid username or password";
             }
+            $this->currentUser($user);
+            header("Location: /");
         }
         catch (Exception $e) {
 
@@ -61,6 +62,7 @@ class UserController extends Controller {
     {
         $_SESSION['user'] = $user->getUserId();
         $_SESSION['username'] = $user->getUsername();
+        $_SESSION['user_role'] = $user->getRoleId();
     }
     function checkValidLoginInput($input, $password) {
         if (empty($input)) {
